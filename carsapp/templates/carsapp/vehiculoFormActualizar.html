@@ -1,0 +1,30 @@
+{% extends 'carsapp/base.html' %}
+{% load static %}
+
+{% block titulo %} Actualizar Vehículo {% endblock %}
+
+{% block contenedor %}
+
+<div class="card text-white bg-secondary">
+    <div class="card-body">
+        <div>
+            Actualizar Vehiculo
+        </div>
+        <div class="btn-cerrarSesion">
+            <a class="btn btn-primary" href="{% url 'carsapp:vehiculoListar' %}" id="ID_BTNListar4">Volver</a>
+        </div>
+    </div>
+</div>
+<div class="formularios">
+    <form action="{% url 'carsapp:vehiculoActualizar' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ dato.id_Vehi }}"><br>
+        Placa: <input name="placa" value="{{ dato.placa }}" class="form-control"><br>
+        Marca: <input name="marca" value="{{ dato.marca }}" class="form-control"><br>
+        Modelo: <input name="modelo" value="{{ dato.modelo }}" class="form-control"><br>
+        Color: <input name="color" value="{{ dato.color }}" class="form-control"><br>
+
+        <button type="submit" class="btn btn-success">Actualizar</button><br>
+    </form>
+</div>
+{% endblock %}

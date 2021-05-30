@@ -1,0 +1,38 @@
+{% extends 'carsapp/base.html' %}
+{% load static %}
+
+{% block titulo %} Registrar Producto {% endblock %}
+
+{% block contenedor %}
+<div class="card text-white bg-secondary">
+    <div class="card-body">
+        <div>
+            Registro Producto
+        </div>
+        <div class="btn-cerrarSesion">
+            <a class="btn btn-primary" href="{% url 'carsapp:inventarioListar' %}" id="ID_BTNListar4">Volver</a>
+        </div>
+    </div>
+</div>
+<div class="formularios">
+    <form action="{% url 'carsapp:inventarioGuardar' %}" method="POST">
+        {% csrf_token %}
+        Referencia: <input name="Ref" class="form-control" required><br>
+        Producto: <input name="producto" class="form-control" required><br>
+        Proveedor: <select name="proveedor" id="" class="form-control">
+            <option value="0">Seleccione un Proveedor</option>
+            {% for i in proveedor %}
+                <option value="{{ i.id_proveedor }}">{{ i.nombre }}</option>
+            {% endfor %}
+        </select><br>
+        Stock: <input name="stock" class="form-control" required><br>
+        Valor Proveedor: <input name="valor_Proveedor" class="form-control" required><br>
+        Valor Venta: <input name="valor_Venta" class="form-control" required><br>
+    
+        <button type="submit" class="btn btn-success">Guardar</button><br>
+    
+    </form>
+</div>
+
+
+{% endblock %}

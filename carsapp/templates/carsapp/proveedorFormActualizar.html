@@ -1,0 +1,32 @@
+{% extends 'carsapp/base.html' %}
+{% load static %}
+
+{% block titulo %} Actualizar Proveedor {% endblock %}
+
+{% block contenedor %}
+
+<div class="card text-white bg-secondary">
+    <div class="card-body">
+        <div>
+            Actualizar Proveedor
+        </div>
+        <div class="btn-cerrarSesion">
+            <a class="btn btn-primary" href="{% url 'carsapp:proveedorListar' %}" id="ID_BTNListar4">Volver</a>
+        </div>
+    </div>
+</div>
+<div class="formularios">
+    <form action="{% url 'carsapp:proveedorActualizar' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ dato.id_proveedor }}"><br>
+        Nit: <input name="nit" value="{{ dato.nit }}" class="form-control"><br>
+        Nombre: <input name="nombre" value="{{ dato.nombre }}" class="form-control"><br>
+        Dirección: <input name="direccion" value="{{ dato.direccion }}" class="form-control"><br>
+        Teléfono: <input name="telefono" value="{{ dato.telefono }}" class="form-control"><br>
+        E-mail: <input name="email" value="{{ dato.email }}" class="form-control"><br>
+        
+        <button type="submit" class="btn btn-success">Actualizar</button><br>
+    </form>
+</div>
+
+{% endblock %}

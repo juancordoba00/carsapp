@@ -1,0 +1,307 @@
+/* Index */
+*{
+    margin: 0;
+    padding: 0;
+}
+.loginPage{
+    background-image:url('../img/358471.jpg');
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.loginBox{
+    background: white;
+    display: flex;
+    flex-direction: column;
+    width: 370px;
+    height: 390px;
+    overflow: hidden;
+    position: relative;
+    font-family: 'Monserrat', sans-serif;
+}
+.loginBox-header{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.loginBox-header-imgBox{
+    display: flex;
+    justify-content: center;
+}
+.loginBox-header-img{
+    width: 260px;
+    height: 180px;
+}
+.loginBox-header-titulo{
+    display: flex;
+    justify-content: center;
+    margin: 2% 0 5% 0;
+}
+.loginBox-header-titulo > h5{
+    font-size: 15px;
+    color: #646666;
+}
+.loginBox-input{
+    display: flex;
+    flex-direction: column;
+    margin: 0 5% 0 5%;
+}
+.loginBox-input > div > input{
+    padding: 9px;
+    margin-bottom: 5%;
+    border: 1px solid #d5d8da;
+    color: #4e5050;
+    transition: 0.3s ease;
+}
+.form-control-feedback{
+    position: absolute;
+    padding: 10px 10px 10px 310px;
+    pointer-events: none;
+    color: #616363;
+}
+.loginBox-button{
+    display: flex;
+    justify-content: center;
+    margin-top: -5%;
+}
+
+
+h1{
+    color: #1587ce;
+    font-size: large;
+}
+
+p{
+    font-size: medium;
+    color: #c0c0c0;
+}
+h1{
+    color: #1587ce;
+    font-size: large;
+}
+
+p{
+    font-size: medium;
+    color: #c0c0c0;
+}
+.img,
+.titulo{
+    text-align: center;
+}
+.img{
+    margin-top: 3%;
+    margin-bottom: 2%;
+}
+.formulario{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: auto;
+}
+
+#btn-search{
+    color: white;
+    border: none;
+}
+#btn-search:hover{
+    background-color: #011158;
+    color: white;
+}
+#navBar{
+    background-color:#929292;
+    border-radius: 5px;
+}
+#navBar > a{
+    color:whitesmoke;
+    font-size: x-large;
+    transition: 0.3s ease;
+}
+#navBar > a:hover{
+    color: #011158;
+}
+#navbarSupportedContent > ul > li > a{
+    color: whitesmoke;
+    transition: 0.3s all;
+}
+#navbarSupportedContent > ul > li > a:hover{
+    color: #011158;
+}
+.card-body > div{
+    display: inline-block;
+}
+.btn-cerrarSesion{
+    margin-top: -10px;
+    float: right;
+}
+.card{
+    height: 10vh;
+}
+.bienvenida{
+    display: inline-block;
+    margin-right: 3px;
+    color: white;
+}
+
+.formularios {
+    width: 800px;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+
+    -webkit-appearance: none;
+
+    margin: 0;
+
+}
+.paginacion{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: teal;
+    text-align: center;
+    border-radius: 5px;
+    height: 30px;
+}
+.footer > p{
+    padding-top: 15px;
+}
+.footer > p > a{
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+.footer > p > a:hover{
+    color: #011158;
+}
+
+/*Carrusel*/
+  
+.body{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    height: 83.5vh;
+    width: 100%;
+    align-items: center;
+    background: whitesmoke
+}
+h4, h2,small,a{
+    margin: 0;
+    padding: 0;
+    color: black;
+    
+}
+a{
+    text-decoration: none;
+}
+.Carousel{
+    width: 100%;
+    margin: 0px 60px;
+    margin-top: -6%;
+}
+.Carousel h2{
+    font-size: 26px;
+    line-height: 38px;
+    padding-bottom: 24px;
+    opacity: .9;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    text-align: center;
+}
+
+/* images*/ 
+
+.slick-list{
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height: 304px;
+    padding: 10px 0px;
+    margin: 0px auto;
+    max-width: 90vw;
+    overflow: hidden;
+}
+.slick-track{
+    position: relative;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    transition: .5s ease-in-out;
+}
+.slick{
+    position: relative;
+    width: 275px;
+    padding: 0 18px;
+    float: left;
+    box-sizing: border-box;
+    display: flex;
+    height: 100%;
+}
+.slick h4{
+    position: absolute;
+    z-index: 1;
+    font-size: 22px;
+    line-height: 23px;
+    color: #fff;
+    padding: 15px;
+}
+.slick h4 small{
+    font-size: 15px;
+    display: block;
+}
+.slick a img{
+    object-fit: cover;
+    height: 300px;
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.5);
+    transition: .3s ease-in-out;
+}
+.slick a img:hover{
+    opacity: .85;
+}
+
+/* buttons */
+
+.slick-arrow{
+    border-radius: 30px;
+    background-color: #fff;
+    position: absolute;
+    z-index: 4;
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.15);
+    border: 0;
+    cursor: pointer;
+}
+.slick-arrow:focus{
+    outline: 0;
+}
+.slick-arrow svg{
+    width: 12px;
+    height: 100%;
+    color: rgba(0,0,0,.7);
+}
+.slick-prev{
+    left: 0px;
+}
+.slick-next{
+    right: 0px;
+}

@@ -1,0 +1,33 @@
+{% extends 'carsapp/base.html' %}
+{% load static %}
+
+{% block titulo %} Registrar Empleado {% endblock %}
+
+{% block contenedor %}
+<div class="card text-white bg-secondary">
+    <div class="card-body">
+        <div>
+            Registro Empleado
+        </div>
+        <div class="btn-cerrarSesion">
+            <a class="btn btn-primary" href="{% url 'carsapp:empleadoListar' %}" id="ID_BTNListar4">Volver</a>
+        </div>
+    </div>
+</div>
+<div class="formularios">
+    <form action="{% url 'carsapp:empleadoGuardar' %}" method="POST">
+        {% csrf_token %}
+        # Documento: <input name="cedula_Emp" class="form-control" required><br>
+        Nombre: <input name="nombre_Emp" class="form-control" required><br>
+        Apellido <input name="apellido_Emp" class="form-control" required><br>
+        Cargo: <input name="cargo_Emp" class="form-control" required><br>
+        Teléfono: <input name="telefono_Emp" class="form-control" required><br>
+        E-mail: <input name="email_Emp" class="form-control" required><br>
+                   
+        <button type="submit" class="btn btn-success">Guardar</button><br>
+    
+    </form>
+</div>
+
+
+{% endblock %}

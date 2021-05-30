@@ -1,0 +1,37 @@
+{% extends 'carsapp/base.html' %}
+{% load static %}
+
+{% block titulo %} Actualizar Inventario {% endblock %}
+
+{% block contenedor %}
+
+<div class="card text-white bg-secondary">
+    <div class="card-body">
+        <div>
+            Actualizar Producto
+        </div>
+        <div class="btn-cerrarSesion">
+            <a class="btn btn-primary" href="{% url 'carsapp:inventarioListar' %}" id="ID_BTNListar4">Volver</a>
+        </div>
+    </div>
+</div>
+<div class="formularios">
+    <form action="{% url 'carsapp:inventarioActualizar' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ dato.id_Producto }}"><br>
+        Referencia: <input name="Ref" value="{{ dato.Ref }}" class="form-control"><br>
+        Producto: <input name="producto" value="{{ dato.producto }}" class="form-control"><br>
+        Proveedor: <select name="proveedor" class="form-control">
+            <option value="0">Seleccione un Proveedor</option>
+            {% for i in proveedor %}
+                <option value="{{ i.id_proveedor }}">{{ i.nombre }}</option>
+            {% endfor %}
+        </select><br>
+        Stock: <input type="number" name="stock" value="{{ dato.stock }}" class="form-control"><br>
+        Valor Proveedor: <input name="valor_Proveedor" value="{{ dato.valor_Proveedor }}" class="form-control"><br>
+        Valor Venta: <input name="valor_Venta" value="{{ dato.valor_Venta }}" class="form-control"><br>
+
+        <button type="submit" class="btn btn-success">Actualizar</button><br>
+    </form>
+</div>
+{% endblock %}

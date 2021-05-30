@@ -1,0 +1,92 @@
+{% extends 'carsapp/base.html' %}
+{% load static %}
+
+{% block titulo %} Configuración de Vehiculo {% endblock %}
+
+{% block contenedor %}
+<div class="card text-white bg-secondary">
+    <div class="card-body">
+        <div>
+            Configuracion de Vehiculo
+        </div>
+    </div>
+</div>
+<div>
+    {% if messages %}
+        {% for m in messages %}
+        <div class="alert alert-{% if m.level == 25 %}success{% elif m.level == 40 %}danger{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+            {{ m }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    
+    {% endif %}
+</div>
+    <br>
+
+    
+    <br />
+    <br />
+    {% if object_list %}
+    <table class="table  table-hover">
+        <tr>
+            <th>ID</th>
+            <th>Placa</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Color</th>
+            <th>Cliente</th>
+            <th>Acciones</th>
+        </tr>
+        {% for registro in object_list %}
+        <tr>
+            <td>{{ registro.id_Vehi }}</td>
+            <td>{{ registro.placa }}</td>
+            <td>{{ registro.marca }}</td>
+            <td>{{ registro.modelo }}</td>
+            <td>{{ registro.color }}</td>
+            <td>{{ registro.id_Cliente.id_Cliente }}</td>
+            <td>
+                <a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:vehiculoEliminar' registro.id_Vehi %}')" role="button"><i class="fas fa-trash-alt"></i></a>
+                <a class="btn btn-info" href="{% url 'carsapp:vehiculoFormActualizar' registro.id_Vehi %}" role="button"><i class="fas fa-edit"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    No hay datos aún.
+    {% endif %}
+
+    {% if is_paginated %}
+        <div class="paginacion">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a href="?page={{ page_obj.previous_page_number }}" class="page-link">Anterior</a>
+                    </li>
+                {% endif %}
+
+                {% for i in paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active">
+                            <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{ page_obj.next_page_number }}" class="page-link">Siguiente</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+
+{% endblock %}

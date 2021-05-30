@@ -1,0 +1,40 @@
+{% extends 'carsapp/base.html' %}
+
+{% load static %}
+
+{% block nav %}
+{% endblock%}
+
+{% block contenedor %}
+    <div class="loginPage">
+        <div class="loginBox">
+            <div class="loginBox-header">
+                <div class="loginBox-header-imgBox">
+                    <img class="loginBox-header-img" src="{% static 'carsapp/img/Logo.png' %}" alt="">
+                </div>
+                <div class="loginBox-header-titulo">
+                    <h5>Ingresa para iniciar sesión</h5>
+                </div>
+            </div>
+            <form action="{% url 'carsapp:login' %}" method="POST">
+                {% csrf_token %}
+                <div class="loginBox-input">
+                    <div class="form-group has-feedback">
+                        <i class="fas fa-user form-control-feedback"></i>
+                        <input type="text" placeholder="Usuario" class="form-control" name="usuario" required>
+                        <i class="fas fa-lock form-control-feedback"></i>
+                        <input type="password" placeholder="Contraseña" class="form-control" name="clave" required>
+                    </div>
+                    
+                </div>
+                <div class="loginBox-button">
+                    <button type="submit" class="btn btn-primary">Ingresar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %} 
+
+{% block footer %}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'carsapp/base.html' %}
+{% load static %}
+
+{% block titulo %} Registrar Servicio {% endblock %}
+
+{% block contenedor %}
+<div class="card text-white bg-secondary">
+    <div class="card-body">
+        <div>
+            Registro Servicio
+        </div>
+        <div class="btn-cerrarSesion">
+            <a class="btn btn-primary" href="{% url 'carsapp:inventarioListar' %}" id="ID_BTNListar4">Volver</a>
+        </div>
+    </div>
+</div>
+<div class="formularios">
+    <form action="{% url 'carsapp:servicioGuardar' %}" method="POST">
+        {% csrf_token %}
+        Tipo de Servicio: <input name="tipo_Servicio" class="form-control" required><br>
+        Nombre de Servicio: <input name="nombre_Servicio" class="form-control" required><br>
+        Valor de Servicio: <input name="valor_Servicio" class="form-control" required><br>
+            
+        <button type="submit" class="btn btn-success">Guardar</button><br>
+    
+    </form>
+</div>
+
+
+{% endblock %}

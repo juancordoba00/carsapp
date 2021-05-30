@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarsApp - {% block titulo %} App {% endblock %} </title>
+
+    <!--Bootstrap-->
+    
+    <link rel="stylesheet" href="{% static 'carsapp/CSS/bootstrap.min.css' %}"/>
+
+    <link rel="stylesheet" href="{% static 'carsapp/CSS/estilos.css' %}"/>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'carsapp/img/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'carsapp/img/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="24x24" href="{% static 'carsapp/img/favicon-24x24.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'carsapp/img/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'carsapp/img/site.webmanifest' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    {% block nav %}
+    <nav class="navbar navbar-expand-lg" id="navBar">
+        <a class="navbar-brand" href="{% url 'carsapp:inicio' %}">CarsApp</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'carsapp:inicio' %}">Inicio</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Administración
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% if request.session.login.2 == 'Administrador' or request.session.login.2 == '3' %}
+                        <a class="dropdown-item" href="{% url 'carsapp:clienteListar' %}">Clientes</a>
+                        <a class="dropdown-item" href="{% url 'carsapp:empleadoListar' %}">Empleados</a>
+                        <a class="dropdown-item" href="{% url 'carsapp:usuarioListar' %}">Usuarios</a>
+                        <a class="dropdown-item" href="{% url 'carsapp:servicioListar' %}">Servicios</a>
+                        <a class="dropdown-item" href="{% url 'carsapp:vehiculoListar' %}">Vehículos</a>
+                        
+                        {% endif %}
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Inventario
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% if request.session.login.2 == 'Administrador' or request.session.login.2 == 'Empleado' %}
+                        <a class="dropdown-item" href="{% url 'carsapp:inventarioListar' %}">Productos</a>
+                        <a class="dropdown-item" href="{% url 'carsapp:proveedorListar' %}">Proveedores</a>
+                        
+                        {% endif %}
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Facturación
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% if request.session.login.2 == 'Administrador' or request.session.login.2 == '3' %}
+                        <a class="dropdown-item" href="{% url 'carsapp:shopping' %}">Shopping</a>
+                        
+                        {% endif %}
+                    </div>
+                </li>
+               
+            </ul>
+            <div>
+                {% if request.session.login %}
+                    <div class="bienvenida">
+                        Bienvenido {{ request.session.login.0 }} {{ request.session.login.1 }} ({{ request.session.login.2 }})
+                    </div>
+                    <a class="btn btn-outline-success my-2 my-sm-0" type="submit" id="btn-search" href="{% url 'carsapp:logout' %}"><i class="fas fa-sign-out-alt"></i></a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+    <div id="respuesta_ajax"></div>
+        {% block contenedor %} ... {% endblock %}
+    </div>
+
+    {% block footer %}
+    <footer>
+        <div class="footer">
+            <p><a href="{% if request.session.login %}{% url 'carsapp:inicio' %}{% endif %}">CarsApp</a> ©2021 Todos los derechos reservados</p>
+        </div>
+    </footer>
+    {% endblock %}
+
+    <script src="{% static 'carsapp/js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'carsapp/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="../../static/carsapp/js/libreria.js"></script>
+    <script src="https://kit.fontawesome.com/c6f6d15d46.js" crossorigin="anonymous"></script>
+    <script src="{% static 'carsapp/js/app.js' %}"></script>
+    <script src="{% static 'carsapp/js/api.json' %}"></script>
+</body>
+
+</html>

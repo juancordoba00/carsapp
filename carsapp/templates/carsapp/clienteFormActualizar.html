@@ -1,0 +1,33 @@
+{% extends 'carsapp/base.html' %}
+{% load static %}
+
+{% block titulo %} Actualizar Cliente {% endblock %}
+
+{% block contenedor %}
+
+<div class="card text-white bg-secondary">
+    <div class="card-body">
+        <div>
+            Actualizar Cliente
+        </div>
+        <div class="btn-cerrarSesion">
+            <a class="btn btn-primary" href="{% url 'carsapp:clienteListar' %}" id="ID_BTNListar4">Volver</a>
+        </div>
+    </div>
+</div>
+<div class="formularios">
+    <form action="{% url 'carsapp:clienteActualizar' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ dato.id_Cliente }}"><br>
+        Tipo Documento: <input name="tipo_Documento" value="{{ dato.tipo_Documento }}" class="form-control"><br>
+        Tipo Cliente: <input name="tipo_Cliente" value="{{ dato.tipo_Cliente }}" class="form-control"><br>
+        Nombre: <input name="nombre_Cliente" value="{{ dato.nombre_Cliente }}" class="form-control"><br>
+        Apellido: <input name="apellido_Cliente" value="{{ dato.apellido_Cliente }}" class="form-control"><br>
+        E-mail: <input type="email" name="email_Cliente" value="{{ dato.email_Cliente }}" class="form-control"><br>
+        Teléfono: <input type="number" name="telefono_Cliente" value="{{ dato.telefono_Cliente }}" class="form-control"><br>
+
+        <button type="submit" class="btn btn-success">Actualizar</button><br>
+    </form>
+</div>
+
+{% endblock %}
