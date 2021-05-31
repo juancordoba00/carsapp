@@ -1,3 +1,4 @@
+from django.contrib.messages.api import error
 from django.core.checks import messages
 
 from django.shortcuts import render
@@ -15,6 +16,7 @@ from django.contrib import messages
 
 from .models import *
 
+"""
 def handle_uploaded_file(f):
     from django.conf import settings
     from django.core.files.storage import default_storage
@@ -50,6 +52,8 @@ def createProducto(request):
         return HttpResponseRedirect(reverse('laNegra:showProducto', args=() ))
     else :
         return HttpResponse("nada")  
+
+"""
 
 def login(request):
     try:
@@ -297,7 +301,7 @@ def vehiculoGuardar(request):
         )
     q.save()
     messages.success(request, 'Vehiculo Creado correctamente..!')
-    return HttpResponseRedirect(reverse('carsapp:clienteListar', args=() ))
+    return HttpResponseRedirect(reverse('carsapp:vehiculoListar', args=() ))
 
 class VehiculoLista(ListView):
     template_name = 'carsapp/vehiculoListar.html'
@@ -549,3 +553,57 @@ def proveedorActualizar(request):
     q.save()
     messages.success(request, 'Proveedor actualizado correctamente..!')
     return HttpResponseRedirect(reverse('carsapp:proveedorListar', args=() ))
+
+#Procesos
+
+def crearRevision(request, id):
+    try:
+        vehi = Vehiculo.objects.get(pk = id)
+
+        q = RevisionVehiculo(
+            estadoProceso = 'En revisión',
+            vehiculo = vehi,
+        )
+        q.save()
+        messages.success(request, 'Vehículo enviado a revisión correctamente..!')
+    except Servicios.DoesNotExist:
+        messages.error(request, "No existe el vehículo " + str(id))
+    except IntegrityError:
+        messages.error(request, "No puede enviar este vehículo porque existen registros.")
+    except:
+        messages.error(request, "Ocurrió un error")
+        
+    return HttpResponseRedirect(reverse('carsapp:vehiculoListar', args=() ))
+
+class RevisionVehiLista(ListView):
+    template_name = 'carsapp/revisionVehiListar.html'
+    queryset = RevisionVehiculo.objects.all()
+    paginate_by = 2
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message'] = 'Lista de revisiones de vehículos'
+
+        return context
+
+def revisionEliminar(request, id):
+    try:
+        q = RevisionVehiculo.objects.get(pk = id)
+        q.delete()
+        messages.success(request, 'Vehículo eliminado de revisión correctamente..!')
+    except IntegrityError:
+        messages.error(request, "No puede eliminar este vehículo en revisión porque existen registros.")
+    except:
+        messages.error(request, "Ocurrió un error")
+        
+    return HttpResponseRedirect(reverse('carsapp:RevisionVehiLista', args=() ))
+
+def asignarEmpleadoRevision(request, id):
+    q = RevisionVehiculo.objects.get(pk = id)
+    empleado = Empleados.objects.get(pk = request.session["login"][3])
+
+    q.empleado = empleado
+    
+    q.save()
+    messages.success(request, 'Empleado asignado correctamente..!')
+    return HttpResponseRedirect(reverse('carsapp:RevisionVehiLista', args=() ))

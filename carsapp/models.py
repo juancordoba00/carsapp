@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import NullBooleanField
 from django.db.models.query import FlatValuesListIterable
@@ -79,6 +80,12 @@ class Vehiculo(models.Model):
     modelo = models.CharField(max_length=4, blank=False, null=False)
     color = models.CharField(max_length=30, blank=False, null=False)
     id_Cliente = models.ForeignKey(Lista_Cliente, on_delete=CASCADE, null=True)
+
+class RevisionVehiculo(models.Model):
+    id = models.AutoField(primary_key=True)
+    estadoProceso = models.CharField(max_length=30, null=True, blank=True)
+    vehiculo = models.ForeignKey(Vehiculo, on_delete=CASCADE)
+    empleado = models.ForeignKey(Empleados, on_delete=CASCADE, null=True)
 
 class EmpleadosXVehiculo(models.Model):
     id_EmpXVehi = models.AutoField(primary_key=True)

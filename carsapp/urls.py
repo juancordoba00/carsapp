@@ -60,6 +60,12 @@ urlpatterns = [
     path('inventarioFormActualizar/<int:id>/', views.inventarioFormActualizar, name='inventarioFormActualizar'),
     path('inventarioActualizar', views.inventarioActualizar, name='inventarioActualizar'),
 
+    path('crearRevision/<int:id>/', views.crearRevision, name='crearRevision'),
+    path('RevisionVehiLista/', views.RevisionVehiLista.as_view(), name='RevisionVehiLista'),
+    path('revisionEliminar/<int:id>/', views.revisionEliminar, name='revisionEliminar'),
+    path('asignarEmpleadoRevision/<int:id>/', views.asignarEmpleadoRevision, name='asignarEmpleadoRevision'),
+
+
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
 

@@ -4,6 +4,18 @@ function vehiculo_Eliminar(ruta){
     }
 }
 
+function vehiculo_Enviar(ruta){
+    if(confirm('Está seguro que desea enviar el vehículo a revisión?')){
+        location.href = ruta;
+    }
+}
+
+function asignarEmpleado(ruta){
+    if(confirm('Está seguro que desea asignarse como empleado a cargo de este vehiculo?')){
+        location.href = ruta;
+    }
+}
+
 function App() {}
 
 window.onload = function (event) {
