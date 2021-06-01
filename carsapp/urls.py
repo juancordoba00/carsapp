@@ -65,6 +65,12 @@ urlpatterns = [
     path('revisionEliminar/<int:id>/', views.revisionEliminar, name='revisionEliminar'),
     path('asignarEmpleadoRevision/<int:id>/', views.asignarEmpleadoRevision, name='asignarEmpleadoRevision'),
 
+    path('MantenimientoVehiLista/', views.MantenimientoVehiLista.as_view(), name='MantenimientoVehiLista'),
+    path('crearMantenimiento/<int:id>/', views.crearMantenimiento, name='crearMantenimiento'),
+    path('mantenimientoEliminar/<int:id>/', views.mantenimientoEliminar, name='mantenimientoEliminar'),
+
+
+
 
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),

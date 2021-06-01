@@ -87,10 +87,12 @@ class RevisionVehiculo(models.Model):
     vehiculo = models.ForeignKey(Vehiculo, on_delete=CASCADE)
     empleado = models.ForeignKey(Empleados, on_delete=CASCADE, null=True)
 
-class EmpleadosXVehiculo(models.Model):
-    id_EmpXVehi = models.AutoField(primary_key=True)
-    id_EmpleadoFK = models.ForeignKey(Empleados, on_delete=models.DO_NOTHING)
-    id_Vehi_FK = models.ForeignKey(Vehiculo, on_delete=models.DO_NOTHING)
+class MantenimientoVehiculo(models.Model):
+    id = models.AutoField(primary_key=True)
+    estadoProceso = models.CharField(max_length=30, null=True, blank=True)
+    vehiculo = models.ForeignKey(Vehiculo, on_delete=CASCADE)
+    empleado = models.ForeignKey(Empleados, on_delete=CASCADE, null=True)    
+
 
 class Cuenta_Servicio(models.Model):
     id_Cuenta = models.AutoField(primary_key=True)

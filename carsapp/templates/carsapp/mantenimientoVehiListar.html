@@ -1,13 +1,13 @@
 {% extends 'carsapp/base.html' %}
 {% load static %}
 
-{% block titulo %} Revisión de Vehículos {% endblock %}
+{% block titulo %} Mantenimiento de vehículos {% endblock %}
 
 {% block contenedor %}
 <div class="card text-white bg-secondary">
     <div class="card-body">
         <div>
-            Revisión de vehículos
+            Manteniemiento de vehículos
         </div>
     </div>
 </div>
@@ -45,9 +45,9 @@
             <td>{{ registro.vehiculo.placa }}</td>
             <td>{{ registro.empleado }}</td>
             <td>
-                <a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:revisionEliminar' registro.id %}')" role="button"><i class="fas fa-trash-alt"></i></a>
-                <a class="btn btn-info" href="javascript:asignarEmpleado('{% url 'carsapp:asignarEmpleadoRevision' registro.id %}')" role="button"><i class="fas fa-user-plus"></i></a>
-                <a class="btn btn-primary" href="javascript:vehiculo_EnviarM('{% url 'carsapp:crearMantenimiento' registro.id %}')" role="button"><i class="fas fa-share-square"></i></a>
+                <a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:mantenimientoEliminar' registro.id %}')" role="button"><i class="fas fa-trash-alt"></i></a>
+                <a class="btn btn-info" href="" role="button"><i class="fas fa-user-plus"></i></a>
+                <a class="btn btn-primary" href="" role="button"><i class="fas fa-share-square"></i></a>
             </td>
         </tr>
         {% endfor %}

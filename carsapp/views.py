@@ -352,7 +352,7 @@ def vehiculoActualizar(request):
 class EmpleadoLista(ListView):
     template_name = 'carsapp/empleadoListar.html'
     queryset = Empleados.objects.all()
-    paginate_by = 2
+    paginate_by = 8
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -554,7 +554,7 @@ def proveedorActualizar(request):
     messages.success(request, 'Proveedor actualizado correctamente..!')
     return HttpResponseRedirect(reverse('carsapp:proveedorListar', args=() ))
 
-#Procesos
+#Procesos revision
 
 def crearRevision(request, id):
     try:
@@ -607,3 +607,52 @@ def asignarEmpleadoRevision(request, id):
     q.save()
     messages.success(request, 'Empleado asignado correctamente..!')
     return HttpResponseRedirect(reverse('carsapp:RevisionVehiLista', args=() ))
+
+
+#Procesos mantenimineto
+
+def crearMantenimiento(request, id):
+    try:
+        mantenimiento = RevisionVehiculo.objects.get(pk = id)
+        vehi = Vehiculo.objects.get(pk = mantenimiento.vehiculo.id_Vehi)
+        emp = Empleados.objects.get(pk = mantenimiento.empleado.cedula_Emp)
+
+
+        q = MantenimientoVehiculo(
+            estadoProceso = 'En mantenimiento',
+            vehiculo = vehi,
+            empleado = emp,
+        )
+        q.save()
+        mantenimiento.delete()
+        messages.success(request, 'Vehículo enviado a mantenimiento correctamente..!')
+    except Servicios.DoesNotExist:
+        messages.error(request, "No existe el vehículo " + str(id))
+    except IntegrityError:
+        messages.error(request, "No puede enviar este vehículo porque existen registros.")
+
+        
+    return HttpResponseRedirect(reverse('carsapp:RevisionVehiLista', args=() ))
+
+class MantenimientoVehiLista(ListView):
+    template_name = 'carsapp/mantenimientoVehiListar.html'
+    queryset = MantenimientoVehiculo.objects.all()
+    paginate_by = 2
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message'] = 'Mantenimiento'
+
+        return context
+
+def mantenimientoEliminar(request, id):
+    try:
+        q = MantenimientoVehiculo.objects.get(pk = id)
+        q.delete()
+        messages.success(request, 'Vehículo eliminado de mantenimiento correctamente..!')
+    except IntegrityError:
+        messages.error(request, "No puede eliminar este vehículo en revisión porque existen registros.")
+    except:
+        messages.error(request, "Ocurrió un error")
+        
+    return HttpResponseRedirect(reverse('carsapp:MantenimientoVehiLista', args=() ))

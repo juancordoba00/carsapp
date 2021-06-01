@@ -10,6 +10,12 @@ function vehiculo_Enviar(ruta){
     }
 }
 
+function vehiculo_EnviarM(ruta){
+    if(confirm('Está seguro que desea enviar el vehículo a mantenimiento?')){
+        location.href = ruta;
+    }
+}
+
 function asignarEmpleado(ruta){
     if(confirm('Está seguro que desea asignarse como empleado a cargo de este vehiculo?')){
         location.href = ruta;
