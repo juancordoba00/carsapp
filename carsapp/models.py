@@ -61,11 +61,14 @@ class Inventario(models.Model):
     id_Producto = models.AutoField(primary_key=True)
     Ref = models.CharField(max_length=30, blank=False, null=False)
     producto = models.CharField(max_length=30, blank=False, null=False)
-    imagen = models.ImageField(upload_to='productos/', null=True)
+    imagen = models.ImageField(upload_to='productos', null=True)
     provedor = models.ForeignKey(Proveedor, on_delete=models.DO_NOTHING, default='Desconocido')
     stock = models.SmallIntegerField(blank=False, null=False)
     valor_Proveedor = models.IntegerField(blank=False, null=False)
     valor_Venta = models.IntegerField(blank=False, null=False)
+
+    def __str__(self):
+        return self.producto
 
 class Servicios(models.Model):
     id_Servicio = models.AutoField(primary_key=True)

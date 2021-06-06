@@ -169,6 +169,7 @@ def inventarioGuardar(request):
         q = Inventario(
             Ref = request.POST['Ref'],
             producto = request.POST['producto'],
+            imagen = request.FILES['imagen'],
             provedor = proveedor,
             stock = request.POST['stock'],
             valor_Proveedor = request.POST['valor_Proveedor'],
@@ -203,17 +204,20 @@ def inventarioActualizar(request):
     q = Inventario.objects.get(pk = request.POST['id'])
     proveedor = Proveedor.objects.get(pk = request.POST['proveedor'])
 
+    try:
+        q.Ref = request.POST['Ref']
+        q.producto = request.POST['producto']
+        q.imagen = request.FILES['imagen']
+        q.provedor = proveedor
+        q.stock = request.POST['stock']
+        q.valor_Proveedor = request.POST['valor_Proveedor']
+        q.valor_Venta = request.POST['valor_Venta']
 
-    q.Ref = request.POST['Ref']
-    q.producto = request.POST['producto']
-    q.provedor = proveedor
-    q.stock = request.POST['stock']
-    q.valor_Proveedor = request.POST['valor_Proveedor']
-    q.valor_Venta = request.POST['valor_Venta']
-    
-    q.save()
-    messages.success(request, 'Producto actualizado correctamente..!')
-    return HttpResponseRedirect(reverse('carsapp:inventarioListar', args=() ))
+        q.save()
+        messages.success(request, 'Producto actualizado correctamente..!')
+        return HttpResponseRedirect(reverse('carsapp:inventarioListar', args=() ))
+    except proveedor.DoesNotExist:
+        messages.error(request, "Seleccione el proveedor ")
 
 #Lista_CLiente
 class ClienteLista(ListView):
@@ -630,7 +634,8 @@ def crearMantenimiento(request, id):
         messages.error(request, "No existe el vehículo " + str(id))
     except IntegrityError:
         messages.error(request, "No puede enviar este vehículo porque existen registros.")
-
+    except:
+        messages.error(request, "Por favor asigne empleado antes de enviar a mantenimiento !")
         
     return HttpResponseRedirect(reverse('carsapp:RevisionVehiLista', args=() ))
 

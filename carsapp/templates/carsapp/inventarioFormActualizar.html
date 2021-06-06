@@ -16,20 +16,21 @@
     </div>
 </div>
 <div class="formularios">
-    <form action="{% url 'carsapp:inventarioActualizar' %}" method="POST">
+    <form action="{% url 'carsapp:inventarioActualizar' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{ dato.id_Producto }}"><br>
-        Referencia: <input name="Ref" value="{{ dato.Ref }}" class="form-control"><br>
-        Producto: <input name="producto" value="{{ dato.producto }}" class="form-control"><br>
+        Referencia: <input name="Ref" value="{{ dato.Ref }}" class="form-control" required><br>
+        Producto: <input name="producto" value="{{ dato.producto }}" class="form-control" required><br>
+        Imagen: <input type="file" name="imagen" required><br><br>
         Proveedor: <select name="proveedor" class="form-control">
-            <option value="0">Seleccione un Proveedor</option>
+            <option value="{{ dato.provedor.id_proveedor }}">{{ dato.provedor.nombre }}</option>
             {% for i in proveedor %}
-                <option value="{{ i.id_proveedor }}">{{ i.nombre }}</option>
+                {% if i.id_proveedor != dato.provedor.id_proveedor %} <option value="{{ i.id_proveedor }}">{{ i.nombre }}</option> {% endif %}
             {% endfor %}
         </select><br>
-        Stock: <input type="number" name="stock" value="{{ dato.stock }}" class="form-control"><br>
-        Valor Proveedor: <input name="valor_Proveedor" value="{{ dato.valor_Proveedor }}" class="form-control"><br>
-        Valor Venta: <input name="valor_Venta" value="{{ dato.valor_Venta }}" class="form-control"><br>
+        Stock: <input type="number" name="stock" value="{{ dato.stock }}" class="form-control" required><br>
+        Valor Proveedor: <input name="valor_Proveedor" value="{{ dato.valor_Proveedor }}" class="form-control" required><br>
+        Valor Venta: <input name="valor_Venta" value="{{ dato.valor_Venta }}" class="form-control" required><br>
 
         <button type="submit" class="btn btn-success">Actualizar</button><br>
     </form>

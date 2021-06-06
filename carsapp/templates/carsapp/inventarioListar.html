@@ -38,6 +38,7 @@
             <th>ID</th>
             <th>Referencia</th>
             <th>Producto</th>
+            <th>Imagen</th>
             <th>Proveedor</th>
             <th>Stock</th>
             <th>Valor Proveedor</th>
@@ -49,6 +50,11 @@
             <td>{{ registro.id_Producto }}</td>
             <td>{{ registro.Ref }}</td>
             <td>{{ registro.producto }}</td>
+            <td>
+                {% if registro.imagen %}
+                    <img src="{{ registro.imagen.url }}" width="80" height="80" alt="">
+                {% endif %}
+            </td>
             <td>{{ registro.provedor.nombre }}</td>
             <td>{{ registro.stock }}</td>
             <td>{{ registro.valor_Proveedor }}</td>

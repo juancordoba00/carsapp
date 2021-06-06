@@ -15,11 +15,12 @@
     </div>
 </div>
 <div class="formularios">
-    <form action="{% url 'carsapp:inventarioGuardar' %}" method="POST">
+    <form action="{% url 'carsapp:inventarioGuardar' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         Referencia: <input name="Ref" class="form-control" required><br>
         Producto: <input name="producto" class="form-control" required><br>
-        Proveedor: <select name="proveedor" id="" class="form-control">
+        Imagen: <input type="file" name="imagen" required><br><br>
+        Proveedor: <select name="proveedor" id="" class="form-control" required>
             <option value="0">Seleccione un Proveedor</option>
             {% for i in proveedor %}
                 <option value="{{ i.id_proveedor }}">{{ i.nombre }}</option>
