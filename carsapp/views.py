@@ -612,6 +612,78 @@ def asignarEmpleadoRevision(request, id):
     messages.success(request, 'Empleado asignado correctamente..!')
     return HttpResponseRedirect(reverse('carsapp:RevisionVehiLista', args=() ))
 
+def AgregarServicioLista(request, id):
+
+    revision = RevisionVehiculo.objects.get(pk = id)
+    q = Servicios.objects.all()
+    q2 = Vehiculo.objects.get(pk = revision.vehiculo.id_Vehi)
+    contexto = {'dato': q}
+    
+    request.session['vehiculo'] = [q2.id_Vehi, q2.placa]
+
+    return render(request, 'carsapp/agregarServicio.html', contexto)
+        
+def agregarServicioAVehiculo(request, id):
+    
+    if request.method == "GET":
+        stage = request.session.get('stage', False)
+
+        vehi = request.session['vehiculo'][0]
+        conteo = 0
+
+        encontrado = False
+        if not stage:
+            request.session['stage'] = [{'servicio': id, 'vehiculo': vehi}]
+            encontrado = True
+            messages.success(request, 'Servicio agregado correctamente..!')
+
+
+        else:    
+            # Averiguar se existe en variable de session
+            for i in request.session['stage']:
+                if i["servicio"] == id:
+                    print("Encontrado...")
+                    encontrado = True
+                    messages.success(request, 'El servicio ya se encentra asignado !')
+                    break
+
+            if not encontrado:
+                # Agregar nuevo servicio
+                print("No encontrado... se crea uno nuevo")
+                stage.append({ "servicio": id, "vehiculo": vehi })
+                conteo += 1
+                encontrado = False
+                messages.success(request, 'Servicio agregado correctamente..!')
+
+
+        request.session["encontrado"] = encontrado
+        print("Stage acutal: ", request.session["stage"])
+
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    else:
+        return HttpResponseRedirect(reverse('carsapp:RevisionVehiLista', args=() ))
+
+def quitarServicioDeStage(request, id):
+    # Recorrer, buscar y eliminar en variable de session
+    stage = request.session.get('stage', False)
+
+    if stage:
+        for i in stage:
+            if i["servicio"] == id:
+                print("Encontrado y eliminado")
+                stage.remove(i)
+                messages.success(request, 'El servicio eliminado correctamente !')
+                break
+            else:
+                print('Este serivcio no se encuentra en zona de stage')
+                break
+
+        request.session["stage"] = stage
+        print('Stage actual: ', request.session['stage'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponseRedirect(reverse('carsapp:RevisionVehiLista', args=() ))
 
 #Procesos mantenimineto
 
@@ -628,14 +700,27 @@ def crearMantenimiento(request, id):
             empleado = emp,
         )
         q.save()
+
+        # Recorrer variable de session stage para agregar registros a la DB
+        if request.session['stage']:
+            for i in request.session['stage']:
+                servi = Servicios.objects.get(pk = i['servicio'])
+                vehi = Vehiculo.objects.get(pk = i['vehiculo'])
+                q2 = VehiXServicio(
+                    id_Servicio = servi,
+                    id_Vehi = vehi
+                )
+                q2.save()
+            del request.session['stage']
         mantenimiento.delete()
+
         messages.success(request, 'Vehículo enviado a mantenimiento correctamente..!')
     except Servicios.DoesNotExist:
         messages.error(request, "No existe el vehículo " + str(id))
     except IntegrityError:
         messages.error(request, "No puede enviar este vehículo porque existen registros.")
-    except:
-        messages.error(request, "Por favor asigne empleado antes de enviar a mantenimiento !")
+    #except:
+     #   messages.error(request, "Por favor asigne empleado antes de enviar a mantenimiento !")
         
     return HttpResponseRedirect(reverse('carsapp:RevisionVehiLista', args=() ))
 

@@ -47,6 +47,7 @@
             <td>
                 <a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:revisionEliminar' registro.id %}')" role="button"><i class="fas fa-trash-alt"></i></a>
                 <a class="btn btn-info" href="javascript:asignarEmpleado('{% url 'carsapp:asignarEmpleadoRevision' registro.id %}')" role="button"><i class="fas fa-user-plus"></i></a>
+                <a class="btn btn-primary" href="{% url 'carsapp:AgregarServicioLista' registro.id %}" role="button"><i class="fas fa-clipboard-list"></i></a>
                 <a class="btn btn-primary" href="javascript:vehiculo_EnviarM('{% url 'carsapp:crearMantenimiento' registro.id %}')" role="button"><i class="fas fa-share-square"></i></a>
             </td>
         </tr>

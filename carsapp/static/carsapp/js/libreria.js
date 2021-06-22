@@ -70,3 +70,22 @@ for(var i = 0; i < inputs.length; i++) {
         }
     });
 }
+
+function agregarServicio(ruta, servicio){
+    console.log("agregar servicio " + servicio.nombre_Servicio + " a zona stage")
+
+    $.ajax({
+        method: "GET",
+        url: ruta,
+        cache: false
+    })
+    .done(function( respuesta ){
+        $( "#stage" ).html( respuesta );
+    });
+}
+
+function eliminarServicio(ruta){
+    if(confirm('Esta seguro que desea quitar este serivicio al vehiculo?')){
+        location.href = ruta
+    }
+}

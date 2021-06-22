@@ -1,0 +1,65 @@
+{% extends 'carsapp/base.html' %}
+{% load static %}
+
+{% block titulo %} Agregar servicios al Vehículo {% endblock %}
+
+{% block contenedor %}
+<div class="card text-white bg-secondary">
+    <div class="card-body">
+        <div>
+            Agregar servicios al vehículo
+        </div>
+        <div class="btn-cerrarSesion">
+            <a class="btn btn-primary" href="{% url 'carsapp:RevisionVehiLista' %}" id="ID_BTNListar4">Volver</a>
+        </div>
+    </div>
+</div>
+<div>
+    {% if messages %}
+        {% for m in messages %}
+        <div class="alert alert-{% if m.level == 25 %}success{% elif m.level == 40 %}danger{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+            {{ m }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    
+    {% endif %}
+</div>
+    <br>
+
+    
+    <br />
+    <br />
+    {% if dato %}
+    <table class="table  table-hover">
+        <tr>
+            <th>Tipo de Servicio</th>
+            <th>Nombre de Servicio</th>
+            <th>Valor de Servicio</th>
+            <th>Acciones</th>
+            <!--<th>Asignado</th>-->
+        </tr>
+        {% for i in dato %}
+        <tr>
+                <td>{{ i.tipo_Servicio }}</td>
+                <td>{{ i.nombre_Servicio }}</td>
+                <td>{{ i.valor_Servicio }}</td>
+                <td>
+                    <a class="btn btn-success" href="javascript:agregarServicio('{% url 'carsapp:agregarServicioAVehiculo' i.id_Servicio %}', '{{ i.id_Servicio }}')" role="button"><i class="fas fa-check-square"></i></a>
+                    <a class="btn btn-danger" href="javascript:eliminarServicio('{% url 'carsapp:quitarServicioDeStage' i.id_Servicio %}')" role="button"><i class="fas fa-backspace"></i></a>
+                </td>
+                <!--
+                <td>
+                    {% if request.session.encontrado %}<span class="btn btn-success"><i class="fas fa-backspace"></i></span>{% endif %}
+                </td>
+                -->
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    No hay datos aún.
+    {% endif %}
+
+{% endblock %}
