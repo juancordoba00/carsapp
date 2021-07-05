@@ -1,13 +1,13 @@
 {% extends 'carsapp/base.html' %}
 {% load static %}
 
-{% block titulo %} Mantenimiento de vehículos {% endblock %}
+{% block titulo %} Facturas {% endblock %}
 
 {% block contenedor %}
 <div class="card text-white bg-secondary">
     <div class="card-body">
         <div>
-            Manteniemiento de vehículos
+            Facturas
         </div>
     </div>
 </div>
@@ -32,23 +32,20 @@
     {% if object_list %}
     <table class="table  table-hover">
         <tr>
-            <th>ID</th>
-            <th>Estado del proceso</th>
+            <th>#</th>
+            <th>Nombre del cliente</th>
             <th>Vehículo</th>
-            <th>Empleado encargado</th>
+            <th>Total a pagar</th>
             <th>Acciones</th>
         </tr>
         {% for registro in object_list %}
         <tr>
-            <td>{{ registro.id }}</td>
-            <td>{{ registro.estadoProceso }}</td>
-            <td>{{ registro.vehiculo.placa }}</td>
-            <td>{{ registro.empleado }}</td>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ registro.id_Cliente.nombre_Cliente }}</td>
+            <td>{{ registro.id_Vehi.placa }}</td>
+            <td>$ {{ registro.totalAPagar }}</td>
             <td>
-                <a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:mantenimientoEliminar' registro.id %}')" role="button"><i class="fas fa-trash-alt"></i></a>
-                <a class="btn btn-info" href="{% url 'carsapp:mantenimientoDetalles' registro.id %}" role="button"><i class="fas fa-info-circle"></i></a>
-                <!--<a class="btn btn-primary" href="{% url 'carsapp:vaciarSessionServis' registro.id %}" role="button"><i class="fas fa-clipboard-list"></i></a>-->
-                <a class="btn btn-success" href="javascript:enviarAFacturas('{% url 'carsapp:crearFacturaServicios' registro.id %}')" role="button"><i class="fas fa-share-square"></i></a>
+                <a class="btn btn-info" href="{% url 'carsapp:facturasDetalles' registro.id %}" role="button"><i class="fas fa-info-circle"></i></a>
             </td>
         </tr>
         {% endfor %}

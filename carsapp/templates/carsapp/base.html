@@ -69,6 +69,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% if request.session.login.2 == 'Administrador' or request.session.login.2 == '3' %}
+                        <a class="dropdown-item" href="{% url 'carsapp:FacturasLista' %}">Facturas</a>
                         <a class="dropdown-item" href="{% url 'carsapp:shopping' %}">Shopping</a>
                         
                         {% endif %}

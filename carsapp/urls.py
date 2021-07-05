@@ -68,9 +68,15 @@ urlpatterns = [
     path('MantenimientoVehiLista/', views.MantenimientoVehiLista.as_view(), name='MantenimientoVehiLista'),
     path('crearMantenimiento/<int:id>/', views.crearMantenimiento, name='crearMantenimiento'),
     path('mantenimientoEliminar/<int:id>/', views.mantenimientoEliminar, name='mantenimientoEliminar'),
+    path('mantenimientoDetalles/<int:id>/', views.mantenimientoDetalles, name='mantenimientoDetalles'),
+    path('mantenimientoServicioEliminar/<int:id>/', views.mantenimientoServicioEliminar, name='mantenimientoServicioEliminar'),
+    path('agregarOtroServiList/<int:id>/', views.agregarOtroServiList, name='agregarOtroServiList'),
+    path('agregarOtroServiAVehi/<int:id>/', views.agregarOtroServiAVehi, name='agregarOtroServiAVehi'),
+    path('vaciarSessionServis/<int:id>/', views.vaciarSessionServis, name='vaciarSessionServis'),
 
-
-
+    path('FacturasLista/', views.FacturasLista.as_view(), name='FacturasLista'),
+    path('crearFacturaServicios/<int:id>/', views.crearFacturaServicios, name='crearFacturaServicios'),
+    path('facturasDetalles/<int:id>/', views.facturasDetalles, name='facturasDetalles'),
 
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),

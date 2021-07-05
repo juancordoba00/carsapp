@@ -96,17 +96,19 @@ class MantenimientoVehiculo(models.Model):
     vehiculo = models.ForeignKey(Vehiculo, on_delete=CASCADE)
     empleado = models.ForeignKey(Empleados, on_delete=CASCADE, null=True)
 
-class Cuenta_Servicio(models.Model):
-    id_Cuenta = models.AutoField(primary_key=True)
-    id_Producto_FK = models.ForeignKey(Inventario, on_delete=models.DO_NOTHING)
-    id_Cliente_FK = models.ForeignKey(Lista_Cliente, on_delete=models.DO_NOTHING)
-
 class VehiXServicio(models.Model):
     id = models.AutoField(primary_key=True)
     id_Servicio = models.ForeignKey(Servicios, on_delete=models.DO_NOTHING, null=True)
     id_Vehi = models.ForeignKey(Vehiculo, on_delete=models.DO_NOTHING, null=True)
 
-class VehiXCliente(models.Model):
-    id_VehiXCliente = models.AutoField(primary_key=True)
-    idVehiFK = models.ForeignKey(Vehiculo, on_delete=models.DO_NOTHING)
-    idClienteFK = models.ForeignKey(Lista_Cliente, on_delete=models.DO_NOTHING)
+class Facturas(models.Model):
+    id = models.AutoField(primary_key=True)
+    totalAPagar = models.IntegerField(blank=False, null=False)
+    id_Cliente = models.ForeignKey(Lista_Cliente, on_delete=CASCADE, null=False)
+    id_Vehi = models.ForeignKey(Vehiculo, on_delete=models.DO_NOTHING, null=False)
+    
+class DetallesFacturas(models.Model):
+    id = models.AutoField(primary_key=True)
+    id_Servicio = models.ForeignKey(Servicios, on_delete=models.DO_NOTHING, null=True)
+    id_Producto = models.ForeignKey(Inventario, on_delete=models.DO_NOTHING, null=True)
+    id_Factura = models.ForeignKey(Facturas, on_delete=models.DO_NOTHING, null=True)

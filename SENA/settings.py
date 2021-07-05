@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# SESSION_COOKIE_AGE = 30
+#SESSION_COOKIE_AGE = 30
 
 ROOT_URLCONF = 'SENA.urls'
 

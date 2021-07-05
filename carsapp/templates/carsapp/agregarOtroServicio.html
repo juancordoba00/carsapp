@@ -10,7 +10,7 @@
             Agregar servicios al vehículo
         </div>
         <div class="btn-cerrarSesion">
-            <a class="btn btn-primary" href="{% url 'carsapp:RevisionVehiLista' %}" id="ID_BTNListar4">Volver</a>
+            <a class="btn btn-primary" href="{% url 'carsapp:MantenimientoVehiLista' %}" id="ID_BTNListar4">Volver</a>
         </div>
     </div>
 </div>
@@ -47,8 +47,8 @@
                 <td>{{ i.nombre_Servicio }}</td>
                 <td>{{ i.valor_Servicio }}</td>
                 <td>
-                    <a class="btn btn-success" href="javascript:agregarServicio('{% url 'carsapp:agregarServicioAVehiculo' i.id_Servicio %}')" role="button"><i class="fas fa-check-square"></i></a>
-                    <a class="btn btn-danger" href="javascript:eliminarServicio('{% url 'carsapp:quitarServicioDeStage' i.id_Servicio %}')" role="button"><i class="fas fa-backspace"></i></a>
+                    <a class="btn btn-success" href="javascript:agregarServicio('{% url 'carsapp:agregarOtroServiAVehi' i.id_Servicio %}')" role="button"><i class="fas fa-check-square"></i></a>
+                    <!--<a class="btn btn-danger" href="javascript:eliminarServicio('{% url 'carsapp:quitarServicioDeStage' i.id_Servicio %}')" role="button"><i class="fas fa-backspace"></i></a>-->
                 </td>
                 <!--
                 <td>

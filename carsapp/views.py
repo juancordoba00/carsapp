@@ -1,10 +1,13 @@
 from django.contrib.messages.api import error
 from django.core.checks import messages
+from django.db.models import query
+from django.db.models.aggregates import Count
 
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic import ListView
 from django.db import transaction
 
+from django.forms.models import model_to_dict
 
 # Create your views here.
 
@@ -619,11 +622,15 @@ def AgregarServicioLista(request, id):
     q2 = Vehiculo.objects.get(pk = revision.vehiculo.id_Vehi)
     contexto = {'dato': q}
     
+    request.session['vehiRevision'] = [revision.id]
     request.session['vehiculo'] = [q2.id_Vehi, q2.placa]
 
     return render(request, 'carsapp/agregarServicio.html', contexto)
         
 def agregarServicioAVehiculo(request, id):
+
+    revision = request.session['vehiRevision'][0]
+    redirect_url = reverse('carsapp:AgregarServicioLista', args=[revision])
     
     if request.method == "GET":
         stage = request.session.get('stage', False)
@@ -659,25 +666,32 @@ def agregarServicioAVehiculo(request, id):
         request.session["encontrado"] = encontrado
         print("Stage acutal: ", request.session["stage"])
 
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return HttpResponseRedirect(redirect_url)
 
     else:
         return HttpResponseRedirect(reverse('carsapp:RevisionVehiLista', args=() ))
 
 def quitarServicioDeStage(request, id):
     # Recorrer, buscar y eliminar en variable de session
-    stage = request.session.get('stage', False)
+    stage = request.session['stage']
+    tamañoStage = len(stage)
+    print(tamañoStage)
 
+    count = 0
     if stage:
         for i in stage:
+
+            count += 1
             if i["servicio"] == id:
                 print("Encontrado y eliminado")
                 stage.remove(i)
-                messages.success(request, 'El servicio eliminado correctamente !')
+                messages.success(request, 'Servicio eliminado correctamente !')
                 break
-            else:
+
+            if count == tamañoStage: 
                 print('Este serivcio no se encuentra en zona de stage')
-                break
+                messages.success(request, 'Este servicio no ha sido asigando al vehículo !')
 
         request.session["stage"] = stage
         print('Stage actual: ', request.session['stage'])
@@ -692,7 +706,6 @@ def crearMantenimiento(request, id):
         mantenimiento = RevisionVehiculo.objects.get(pk = id)
         vehi = Vehiculo.objects.get(pk = mantenimiento.vehiculo.id_Vehi)
         emp = Empleados.objects.get(pk = mantenimiento.empleado.cedula_Emp)
-
 
         q = MantenimientoVehiculo(
             estadoProceso = 'En mantenimiento',
@@ -719,8 +732,8 @@ def crearMantenimiento(request, id):
         messages.error(request, "No existe el vehículo " + str(id))
     except IntegrityError:
         messages.error(request, "No puede enviar este vehículo porque existen registros.")
-    #except:
-     #   messages.error(request, "Por favor asigne empleado antes de enviar a mantenimiento !")
+    except:
+        messages.error(request, "Por favor asigne empleado antes de enviar a mantenimiento !")
         
     return HttpResponseRedirect(reverse('carsapp:RevisionVehiLista', args=() ))
 
@@ -738,7 +751,9 @@ class MantenimientoVehiLista(ListView):
 def mantenimientoEliminar(request, id):
     try:
         q = MantenimientoVehiculo.objects.get(pk = id)
+        q2 = VehiXServicio.objects.filter(id_Vehi = q.vehiculo)
         q.delete()
+        q2.delete()
         messages.success(request, 'Vehículo eliminado de mantenimiento correctamente..!')
     except IntegrityError:
         messages.error(request, "No puede eliminar este vehículo en revisión porque existen registros.")
@@ -746,3 +761,166 @@ def mantenimientoEliminar(request, id):
         messages.error(request, "Ocurrió un error")
         
     return HttpResponseRedirect(reverse('carsapp:MantenimientoVehiLista', args=() ))
+
+def mantenimientoDetalles(request, id):
+    q = MantenimientoVehiculo.objects.get(pk = id)
+    q2 = Vehiculo.objects.get(pk = q.vehiculo.id_Vehi)
+    query = VehiXServicio.objects.filter(id_Vehi = q2.id_Vehi)
+
+    contexto = {'datos': query}
+    return render(request, 'carsapp/mantenimientoDetalles.html', contexto)
+    
+def mantenimientoServicioEliminar(request, id):
+
+    mantenimiento = request.session['vehiMantenimiento'][0]
+    redirect_url = reverse('carsapp:mantenimientoDetalles', args=[mantenimiento])
+
+    try:
+        q = VehiXServicio.objects.get(pk = id)
+        q.delete()
+        messages.success(request, 'Servicio eliminado correctamente..!')
+    except IntegrityError:
+        messages.error(request, "No puede eliminar este vehículo en revisión porque existen registros.")
+   
+    
+    return HttpResponseRedirect(redirect_url)
+
+def vaciarSessionServis(request, id):
+
+    del request.session['servis']
+    redirect_url = reverse('carsapp:agregarOtroServiList', args=[id])
+
+    return HttpResponseRedirect(redirect_url)
+
+
+def agregarOtroServiList(request, id):
+
+    q = Servicios.objects.all()
+
+    mantenimiento = MantenimientoVehiculo.objects.get(pk = id)
+    request.session['vehiMantenimiento'] = [mantenimiento.vehiculo.id_Vehi]
+
+    query = VehiXServicio.objects.filter(id_Vehi = mantenimiento.vehiculo.id_Vehi)
+    print(query)
+    if request.method == 'GET':
+        servis = request.session.get('servis', False)
+        count = 0
+        for i in query:
+            count += 1
+            instancia = model_to_dict(i)
+            print(instancia, ' --- ', count)
+
+            encontrado = False
+            if not servis:
+                print('Servis vacio... Se agrega')
+                request.session['servis'] = [{'servicio': instancia['id_Servicio'], 'vehiculo': instancia['id_Vehi']}]
+                encontrado = True
+            
+            if not encontrado:
+                print('No encontrado... Se agrega!')
+                servis.append({ "servicio": instancia['id_Servicio'], "vehiculo": instancia['id_Vehi']})
+
+
+    print('Servicios actuales: ', request.session['servis'])
+    contexto = {'dato': q}
+
+    return render(request, 'carsapp/agregarOtroServicio.html', contexto)
+
+def agregarOtroServiAVehi(request, id):
+
+    mantenimiento = MantenimientoVehiculo.objects.get(pk = id)
+    vehi = Vehiculo.objects.get(pk = mantenimiento.vehiculo)
+
+    revision = request.session['vehiRevision'][0]
+    redirect_url = reverse('carsapp:AgregarServicioLista', args=[revision])
+    
+    if request.method == "GET":
+        stage = request.session.get('stage', False)
+
+        vehi = request.session['vehiculo'][0]
+        conteo = 0
+
+        encontrado = False
+        if not stage:
+            request.session['stage'] = [{'servicio': id, 'vehiculo': vehi}]
+            encontrado = True
+            messages.success(request, 'Servicio agregado correctamente..!')
+
+
+        else:    
+            # Averiguar se existe en variable de session
+            for i in request.session['stage']:
+                if i["servicio"] == id:
+                    print("Encontrado...")
+                    encontrado = True
+                    messages.success(request, 'El servicio ya se encentra asignado !')
+                    break
+
+            if not encontrado:
+                # Agregar nuevo servicio
+                print("No encontrado... se crea uno nuevo")
+                stage.append({ "servicio": id, "vehiculo": vehi })
+                conteo += 1
+                encontrado = False
+                messages.success(request, 'Servicio agregado correctamente..!')
+
+
+        request.session["encontrado"] = encontrado
+        print("Stage acutal: ", request.session["stage"])
+
+        #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return HttpResponseRedirect(redirect_url)
+
+    else:
+        return HttpResponseRedirect(reverse('carsapp:RevisionVehiLista', args=() ))
+
+# Facturas
+
+def crearFacturaServicios(request, id):
+    try:
+        mantenimiento = MantenimientoVehiculo.objects.get(pk = id)
+        vehi = Vehiculo.objects.get(pk = mantenimiento.vehiculo.id_Vehi)
+        cliente = Lista_Cliente.objects.get(pk = vehi.id_Cliente.id_Cliente)
+        query = VehiXServicio.objects.filter(id_Vehi = mantenimiento.vehiculo.id_Vehi)
+    
+        total = 0
+        for i in query:
+            total += i.id_Servicio.valor_Servicio
+
+        q = Facturas(
+            totalAPagar = total,
+            id_Cliente = cliente,
+            id_Vehi = vehi,
+        )
+        q.save()
+        factu = Facturas.objects.get(pk = q.id)
+        for i in query:
+            servi = Servicios.objects.get(pk = i.id_Servicio.id_Servicio)
+            factura = Facturas.objects.get(pk = factu.id)
+            q2 = DetallesFacturas(
+                id_Servicio = servi,
+                id_Factura = factura,
+            )
+            q2.save()
+        
+        query.delete()
+        mantenimiento.delete()
+        messages.success(request, 'Factura generada correctamente..!')
+    except IntegrityError:
+        messages.error(request, "No puede crear la factura porque existen registros.")
+    #except:
+     #   messages.error(request, "Oops... Ocurrio un error")
+
+    return HttpResponseRedirect(reverse('carsapp:MantenimientoVehiLista', args=() ))
+
+class FacturasLista(ListView) :
+    template_name = 'carsapp/facturasLista.html'
+    queryset = Facturas.objects.all()
+    paginate_by = 2
+
+def facturasDetalles(request, id):
+    factura = Facturas.objects.get(pk = id)
+    query = DetallesFacturas.objects.filter(id_Factura = factura.id)
+
+    contexto = {'datos': query}
+    return render(request, 'carsapp/facturasDetalles.html', contexto)

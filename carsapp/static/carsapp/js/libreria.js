@@ -70,7 +70,7 @@ for(var i = 0; i < inputs.length; i++) {
         }
     });
 }
-
+/*
 function agregarServicio(ruta, servicio){
     console.log("agregar servicio " + servicio.nombre_Servicio + " a zona stage")
 
@@ -83,9 +83,22 @@ function agregarServicio(ruta, servicio){
         $( "#stage" ).html( respuesta );
     });
 }
+*/
+
+function agregarServicio(ruta){
+    if(confirm('Desea agregar este serivicio al vehiculo?')){
+        location.href = ruta
+    }
+}
+
+function enviarAFacturas(ruta){
+    if(confirm('Desea enviar este vehiculo a facturas?')){
+        location.href = ruta
+    }
+}
 
 function eliminarServicio(ruta){
-    if(confirm('Esta seguro que desea quitar este serivicio al vehiculo?')){
+    if(confirm('Esta seguro que desea quitar este servicio al vehiculo?')){
         location.href = ruta
     }
 }

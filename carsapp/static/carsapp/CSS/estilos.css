@@ -186,6 +186,9 @@ footer{
 .footer > p > a:hover{
     color: #011158;
 }
+.btn-agregarServi{
+    margin-left: 15px;
+}
 
 /*Carrusel*/
   
