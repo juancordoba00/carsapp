@@ -25,9 +25,6 @@
     {% endif %}
 </div>
     <br>
-
-    
-    <br />
     <br />
     {% if object_list %}
     <table class="table table-hover">
@@ -49,9 +46,9 @@
             <td>{{ registro.color }}</td>
             <td>{{ registro.id_Cliente.id_Cliente }}</td>
             <td>
-                <a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:vehiculoEliminar' registro.id_Vehi %}')" role="button"><i class="fas fa-trash-alt"></i></a>
-                <a class="btn btn-info" href="{% url 'carsapp:vehiculoFormActualizar' registro.id_Vehi %}" role="button"><i class="fas fa-edit"></i></a>
-                <a class="btn btn-primary" href="javascript:vehiculo_Enviar('{% url 'carsapp:crearRevision' registro.id_Vehi %}')" role="button"><i class="fas fa-share-square"></i></a>
+                <abbr title="Eliminar vehículo"><a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:vehiculoEliminar' registro.id_Vehi %}')" role="button"><i class="fas fa-trash-alt"></i></a></abbr>
+                <abbr title="Actualizar datos"><a class="btn btn-info" href="{% url 'carsapp:vehiculoFormActualizar' registro.id_Vehi %}" role="button"><i class="fas fa-edit"></i></a></abbr>
+                <abbr title="Enviar a revisión"><a class="btn btn-primary" href="javascript:vehiculo_Enviar('{% url 'carsapp:crearRevision' registro.id_Vehi %}')" role="button"><i class="fas fa-share-square"></i></a></abbr>
             </td>
         </tr>
         {% endfor %}

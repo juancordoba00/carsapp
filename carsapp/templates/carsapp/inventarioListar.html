@@ -1,4 +1,5 @@
 {% extends 'carsapp/base.html' %}
+{% load humanize %}
 {% load static %}
 
 {% block titulo %} Configuración de Inventario {% endblock %}
@@ -28,9 +29,6 @@
     {% endif %}
 </div>
     <br>
-
-    
-    <br />
     <br />
     {% if object_list %}
     <table class="table  table-hover">
@@ -57,11 +55,11 @@
             </td>
             <td>{{ registro.provedor.nombre }}</td>
             <td>{{ registro.stock }}</td>
-            <td>{{ registro.valor_Proveedor }}</td>
-            <td>{{ registro.valor_Venta }}</td>
+            <td>$ {{ registro.valor_Proveedor|intcomma }}</td>
+            <td>$ {{ registro.valor_Venta|intcomma }}</td>
             <td>
-                <a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:inventarioEliminar' registro.id_Producto %}')" role="button"><i class="fas fa-trash-alt"></i></a>
-                <a class="btn btn-info" href="{% url 'carsapp:inventarioFormActualizar' registro.id_Producto %}" role="button"><i class="fas fa-edit"></i></a>
+                <abbr title="Eliminar producto"><a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:inventarioEliminar' registro.id_Producto %}')" role="button"><i class="fas fa-trash-alt"></i></a></abbr>
+                <abbr title="Actualizar datos"><a class="btn btn-info" href="{% url 'carsapp:inventarioFormActualizar' registro.id_Producto %}" role="button"><i class="fas fa-edit"></i></a></abbr>
             </td>
         </tr>
         {% endfor %}

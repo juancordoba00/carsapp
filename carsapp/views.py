@@ -9,6 +9,8 @@ from django.db import transaction
 
 from django.forms.models import model_to_dict
 
+from datetime import datetime
+
 # Create your views here.
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -91,7 +93,7 @@ def shopping(request):
 class ServicioLista(ListView):
     template_name = 'carsapp/servicioListar.html'
     queryset = Servicios.objects.all()
-    paginate_by = 2
+    paginate_by = 7
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -150,7 +152,7 @@ def servicioActualizar(request):
 class InventarioLista(ListView):
     template_name = 'carsapp/inventarioListar.html'
     queryset = Inventario.objects.all()
-    paginate_by = 2
+    paginate_by = 7
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -226,7 +228,7 @@ def inventarioActualizar(request):
 class ClienteLista(ListView):
     template_name = 'carsapp/clienteListar.html'
     queryset = Lista_Cliente.objects.all()
-    paginate_by = 2
+    paginate_by = 7
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -313,7 +315,7 @@ def vehiculoGuardar(request):
 class VehiculoLista(ListView):
     template_name = 'carsapp/vehiculoListar.html'
     queryset = Vehiculo.objects.all()
-    paginate_by = 2
+    paginate_by = 7
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -359,7 +361,7 @@ def vehiculoActualizar(request):
 class EmpleadoLista(ListView):
     template_name = 'carsapp/empleadoListar.html'
     queryset = Empleados.objects.all()
-    paginate_by = 8
+    paginate_by = 7
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -454,7 +456,7 @@ def usuarioGuardar(request):
 class UsuarioLista(ListView):
     template_name = 'carsapp/usuarioListar.html'
     queryset = Usuario.objects.all()
-    paginate_by = 2
+    paginate_by = 7
 
     def get_context_data(self, **kwargs):
         context = super(UsuarioLista, self).get_context_data(**kwargs)
@@ -501,7 +503,7 @@ def usuarioActualizar(request):
 class ProveedorLista(ListView):
     template_name = 'carsapp/proveedorListar.html'
     queryset = Proveedor.objects.all()
-    paginate_by = 2
+    paginate_by = 7
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -585,7 +587,7 @@ def crearRevision(request, id):
 class RevisionVehiLista(ListView):
     template_name = 'carsapp/revisionVehiListar.html'
     queryset = RevisionVehiculo.objects.all()
-    paginate_by = 2
+    paginate_by = 7
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -740,7 +742,7 @@ def crearMantenimiento(request, id):
 class MantenimientoVehiLista(ListView):
     template_name = 'carsapp/mantenimientoVehiListar.html'
     queryset = MantenimientoVehiculo.objects.all()
-    paginate_by = 2
+    paginate_by = 7
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -882,13 +884,16 @@ def crearFacturaServicios(request, id):
         vehi = Vehiculo.objects.get(pk = mantenimiento.vehiculo.id_Vehi)
         cliente = Lista_Cliente.objects.get(pk = vehi.id_Cliente.id_Cliente)
         query = VehiXServicio.objects.filter(id_Vehi = mantenimiento.vehiculo.id_Vehi)
-    
+
+        fechaPedido = datetime.now() #"2021-05-31 00:00:00"
+
         total = 0
         for i in query:
             total += i.id_Servicio.valor_Servicio
 
         q = Facturas(
             totalAPagar = total,
+            fecha = fechaPedido,
             id_Cliente = cliente,
             id_Vehi = vehi,
         )
@@ -916,7 +921,7 @@ def crearFacturaServicios(request, id):
 class FacturasLista(ListView) :
     template_name = 'carsapp/facturasLista.html'
     queryset = Facturas.objects.all()
-    paginate_by = 2
+    paginate_by = 7
 
 def facturasDetalles(request, id):
     factura = Facturas.objects.get(pk = id)
@@ -924,3 +929,178 @@ def facturasDetalles(request, id):
 
     contexto = {'datos': query}
     return render(request, 'carsapp/facturasDetalles.html', contexto)
+
+
+# Carrito 
+
+def vender(request):
+    q = Inventario.objects.all().order_by('producto')
+    contexto = { "datos" : q }
+    return render(request, 'carsapp/vender.html', contexto)
+
+def agregarCarrito(request, id):
+
+    if request.method == "GET":
+        
+        bolsa = request.session.get('bolsa', False)
+        carrito = request.session.get('carrito', False)
+        cant = request.GET["cantidad"]
+        
+        conteo = 0
+        if not bolsa:
+            request.session["carrito"] = [{ "producto": id, "cantidad": cant }]
+            conteo +=1
+            request.session["bolsa"] = conteo
+            print("no existe", request.session["carrito"], " cantidad: ", request.session["bolsa"])
+        else:
+            conteo = bolsa
+            #averiguar si existe primero en variable de sesion
+            encontrado = False
+            for r in carrito:
+                if r["producto"] == id:
+                    print("Encontrado...")
+                    #actualizar cantidad
+                    r["cantidad"] = int(r["cantidad"]) + int(cant)
+                    encontrado = True
+                    break
+                
+            if not encontrado:
+                #crear nuevo
+                print("No encontrado, se crea nuevo...")
+                carrito.append({ "producto": id, "cantidad": cant })
+                conteo += 1
+
+            request.session["carrito"] = carrito
+            request.session["bolsa"] = conteo
+
+            print("existe agrego: ", request.session["carrito"], " cantidad: ", request.session["bolsa"])
+        
+        return HttpResponse (conteo)
+    else:
+        return HttpResponseRedirect(reverse('carsapp:inicio', args=() ))
+    
+
+def verCarrito(request):
+    #recorrer variable de sesion CARRITO
+    carrito = request.session.get('carrito', False)
+    clientes = Lista_Cliente.objects.all()
+    if carrito:
+        total = 0
+        for productos in carrito:
+            q = Inventario.objects.get(id_Producto = productos["producto"])
+            productos['nombre'] = q.producto
+            productos["precio"] = q.valor_Venta
+            productos["foto"] = q.imagen
+            productos["subtotal"] = int(productos["cantidad"]) * q.valor_Venta
+            total += productos["subtotal"]
+
+        contexto = { "datos": carrito, "total": total, 'clientes': clientes}
+        print('Este es el carrito: ', carrito)
+        return render(request, 'carsapp/vender_ver.html', contexto)
+    else:
+        return HttpResponseRedirect(reverse('carsapp:vender', args=() ))
+
+def quitarProducto(request, id):
+    #recorrer, buscar y eliminar producto en variable de sesion CARRITO
+    carrito = request.session.get('carrito', False)
+    bolsa = request.session.get('bolsa', False)
+    
+    if carrito:
+        for productos in carrito:
+            if productos["producto"] == id:
+                print("encontrado y eliminado")
+                carrito.remove(productos)
+                bolsa -= 1
+
+            print("fin")
+
+        request.session["carrito"] = carrito
+        request.session["bolsa"] = bolsa
+        return HttpResponseRedirect(reverse('carsapp:ver_carrito', args=() ))
+    else:
+        return HttpResponseRedirect(reverse('carsapp:vender', args=() ))
+
+def limpiarCarrito(request):
+    try:
+        del request.session["carrito"]
+        del request.session["bolsa"]
+
+        return HttpResponseRedirect(reverse('carsapp:vender', args=() ))
+    except:
+        return HttpResponseRedirect(reverse('carsapp:ver_carrito', args=() ))
+
+def guardarPedido(request):
+    logueado = request.session.get('login', False)
+    if logueado :
+        #recorrer variable de sesion CARRITO para guardar en base de datos
+        carrito = request.session.get('carrito', False)
+        if carrito:
+            # obtener fecha actual
+            fechaPedido = datetime.now() #"2021-05-31 00:00:00"
+            print(request.POST['cliente'])
+            cliente = Lista_Cliente.objects.get(pk = request.POST['cliente'])
+
+            totalPagar = 0
+            for i in carrito:
+                p = Inventario.objects.get(id_Producto = int(i['producto']))
+                totalPagar += p.valor_Venta
+
+            from django.db import transaction
+            try:
+                with transaction.atomic():
+
+                    #creando encabezado pedido
+                    q = Facturas(totalAPagar = totalPagar, fecha = fechaPedido, id_Cliente = cliente)
+                    q.save()
+                    ultimo = Facturas.objects.latest('id')
+                    print("Encabezado Pedido: ", ultimo)
+
+                    
+                    for productos in carrito:
+                        pro = Inventario.objects.get(id_Producto = int(productos["producto"]))
+                        
+                        #control stock
+                        if int(productos["cantidad"]) <= pro.stock:
+                            #guardado masivo
+                            print('Holaaaaaaaaa')
+                            print('id_prodcuto: ', pro, 'precio: ', pro.valor_Venta, 'cantidad: ', int(productos["cantidad"]), 'id_factura: ', ultimo)
+                            DetallesFacturas.objects.create(id_Producto = pro, precio = pro.valor_Venta, cantidad_Producto = int(productos["cantidad"]), id_Factura = ultimo)
+                            #disminuir stock producto
+                            pro.stock -= int(productos["cantidad"])
+                            pro.save()
+                        else:
+                            messages.error(request, "Cantidad de producto " + str(productos["producto"]) + " supera STOCK " + str(pro.stock))
+                            raise Exception("stock")
+
+                    #vaciar carrito
+                    del request.session["carrito"]
+                    del request.session["bolsa"]
+                    messages.success(request, 'Factura generada Correctamente..!')
+
+                    return HttpResponseRedirect(reverse('carsapp:FacturasLista', args=() ))
+            except:
+                messages.error(request, "Ocurrió un error generando la factura")
+                return HttpResponseRedirect(reverse('carsapp:ver_carrito', args=() ))
+        else:
+            return HttpResponseRedirect(reverse('carsapp:vender', args=() ))
+    else:
+        messages.error(request, "Para poder facturar el pedido debe loguearse primero!")
+        return HttpResponseRedirect(reverse('carsapp:index', args=() ))
+
+
+def editarCarrito(request, id, cantidad):
+    #recorrer, buscar y actualizar cantidad en producto de variable de sesion CARRITO
+    carrito = request.session.get('carrito', False)
+    
+    if carrito:
+        for productos in carrito:
+            if productos["producto"] == id:
+                print("encontrado y actualizado")
+                productos["cantidad"] = int(cantidad)
+
+            print("fin")
+
+        request.session["carrito"] = carrito
+        return HttpResponse("OK")
+    else:
+        return HttpResponse("No existe carrito.")

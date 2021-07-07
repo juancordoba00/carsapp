@@ -28,9 +28,6 @@
     {% endif %}
 </div>
     <br>
-    
-    
-    <br />
     <br />
     {% if object_list %}
     <table class="table  table-hover">
@@ -54,9 +51,9 @@
             <td>{{ registro.email_Cliente }}</td>
             <td>{{ registro.telefono_Cliente }}</td>
             <td>
-                <a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:clienteEliminar' registro.id_Cliente %}')" role="button"><i class="fas fa-trash-alt"></i></a>
-                <a class="btn btn-info" href="{% url 'carsapp:clienteFormActualizar' registro.id_Cliente %}" role="button"><i class="fas fa-edit"></i></a>
-                <a class="btn btn-primary" href="{% url 'carsapp:vehiculoFormulario' registro.id_Cliente %}" role="button"><i class="fas fa-plus-circle"></i></a>
+                <abbr title="Eliminar cliente"><a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:clienteEliminar' registro.id_Cliente %}')" role="button"><i class="fas fa-trash-alt"></i></a></abbr>
+                <abbr title="Actualizar datos"><a class="btn btn-info" href="{% url 'carsapp:clienteFormActualizar' registro.id_Cliente %}" role="button"><i class="fas fa-edit"></i></a></abbr>
+                <abbr title="Registrar vehiculo"><a class="btn btn-primary" href="{% url 'carsapp:vehiculoFormulario' registro.id_Cliente %}" role="button"><i class="fas fa-plus-circle"></i></a></abbr>
             </td>
         </tr>
         {% endfor %}

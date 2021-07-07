@@ -52,8 +52,8 @@
             <td>{{ registro.telefono }}</td>
             <td>{{ registro.email }}</td>
             <td>
-                <a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:proveedorEliminar' registro.id_proveedor %}')" role="button"><i class="fas fa-trash-alt"></i></a>
-                <a class="btn btn-info" href="{% url 'carsapp:proveedorFormActualizar' registro.id_proveedor %}" role="button"><i class="fas fa-edit"></i></a>
+                <abbr title="Eliminar proveedor"><a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:proveedorEliminar' registro.id_proveedor %}')" role="button"><i class="fas fa-trash-alt"></i></a></abbr>
+                <abbr title="Actualizar datos"><a class="btn btn-info" href="{% url 'carsapp:proveedorFormActualizar' registro.id_proveedor %}" role="button"><i class="fas fa-edit"></i></a></abbr>
             </td>
         </tr>
         {% endfor %}

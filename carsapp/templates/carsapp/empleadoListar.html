@@ -28,9 +28,6 @@
     {% endif %}
 </div>
     <br>
-
-    
-    <br />
     <br />
     {% if object_list %}
     <table class="table  table-hover">
@@ -52,9 +49,9 @@
             <td>{{ registro.telefono_Emp }}</td>
             <td>{{ registro.email_Emp }}</td>
             <td>
-                <a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:empleadoEliminar' registro.cedula_Emp %}')" role="button"><i class="fas fa-trash-alt"></i></a>
-                <a class="btn btn-info" href="{% url 'carsapp:empleadoFormActualizar' registro.cedula_Emp %}" role="button"><i class="fas fa-edit"></i></a>
-                <a class="btn btn-primary" href="{% url 'carsapp:usuarioCrear' registro.cedula_Emp %}" role="button"><i class="fas fa-plus-circle"></i></a>
+                <abbr title="Eliminar empleado"><a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:empleadoEliminar' registro.cedula_Emp %}')" role="button"><i class="fas fa-trash-alt"></i></a></abbr>
+                <abbr title="Actualizar datos"><a class="btn btn-info" href="{% url 'carsapp:empleadoFormActualizar' registro.cedula_Emp %}" role="button"><i class="fas fa-edit"></i></a></abbr>
+                <abbr title="Crear usuario"><a class="btn btn-primary" href="{% url 'carsapp:usuarioCrear' registro.cedula_Emp %}" role="button"><i class="fas fa-plus-circle"></i></a></abbr>
             </td>
         </tr>
         {% endfor %}

@@ -1,4 +1,5 @@
 {% extends 'carsapp/base.html' %}
+{% load humanize %}
 {% load static %}
 
 {% block titulo %} Detalles de factura {% endblock %}
@@ -34,15 +35,21 @@
     <table class="table  table-hover">
         <tr>
             <th>#</th>
-            <th>Servicio realizado</th>
-            <th>Precio del servicio</th>
+            <th>Servicio</th>
+            <th>Precio servicio</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio producto</th>
             <!--<th>Acciones</th>-->
         </tr>
         {% for i in datos %}
         <tr>
             <td>{{ forloop.counter }}</td>
-            <td>{{ i.id_Servicio.nombre_Servicio }}</td>
-            <td>{{ i.id_Servicio.valor_Servicio }}</td>
+            <td>{% if i.id_Servicio.nombre_Servicio %} {{ i.id_Servicio.nombre_Servicio }} {% else %} No aplica {% endif %}</td>
+            <td>$ {% if i.id_Servicio.valor_Servicio %} {{ i.id_Servicio.valor_Servicio|intcomma }} {% else %} 0 {% endif %}</td>
+            <td>{% if i.id_Producto %} {{ i.id_Producto }} {% else %} No aplica {% endif %}</td>
+            <td>{% if i.cantidad_Producto %} {{ i.cantidad_Producto }} {% else %} No aplica {% endif %}</td>
+            <td>$ {% if i.precio %} {{ i.precio|intcomma }} {% else %} 0 {% endif %}</td>
         </tr>
         {% endfor %}
     </table>

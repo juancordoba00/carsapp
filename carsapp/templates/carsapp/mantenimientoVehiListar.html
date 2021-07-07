@@ -25,9 +25,6 @@
     {% endif %}
 </div>
     <br>
-    
-    
-    <br />
     <br />
     {% if object_list %}
     <table class="table  table-hover">
@@ -45,10 +42,10 @@
             <td>{{ registro.vehiculo.placa }}</td>
             <td>{{ registro.empleado }}</td>
             <td>
-                <a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:mantenimientoEliminar' registro.id %}')" role="button"><i class="fas fa-trash-alt"></i></a>
-                <a class="btn btn-info" href="{% url 'carsapp:mantenimientoDetalles' registro.id %}" role="button"><i class="fas fa-info-circle"></i></a>
+                <abbr title="Eliminar de mantenimiento"><a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:mantenimientoEliminar' registro.id %}')" role="button"><i class="fas fa-trash-alt"></i></a></abbr>
+                <abbr title="Detalles de mantenimiento"><a class="btn btn-info" href="{% url 'carsapp:mantenimientoDetalles' registro.id %}" role="button"><i class="fas fa-info-circle"></i></a></abbr>
                 <!--<a class="btn btn-primary" href="{% url 'carsapp:vaciarSessionServis' registro.id %}" role="button"><i class="fas fa-clipboard-list"></i></a>-->
-                <a class="btn btn-success" href="javascript:enviarAFacturas('{% url 'carsapp:crearFacturaServicios' registro.id %}')" role="button"><i class="fas fa-share-square"></i></a>
+                <abbr title="Enviar a facturación"><a class="btn btn-success" href="javascript:enviarAFacturas('{% url 'carsapp:crearFacturaServicios' registro.id %}')" role="button"><i class="fas fa-share-square"></i></a></abbr>
             </td>
         </tr>
         {% endfor %}

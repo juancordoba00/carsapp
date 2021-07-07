@@ -25,9 +25,6 @@
     {% endif %}
 </div>
     <br>
-
-    
-    <br />
     <br />
     {% if object_list %}
     <table class="table  table-hover">
@@ -45,8 +42,8 @@
             <td>{{ registro.rol }}</td>
             <td>{{ registro.cedula_Emp }}</td>
             <td>
-                <a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:usuarioEliminar' registro.usuario %}')" role="button"><i class="fas fa-trash-alt"></i></a>
-                <a class="btn btn-info" href="{% url 'carsapp:usuarioFormActualizar' registro.usuario %}" role="button"><i class="fas fa-edit"></i></a>
+                <abbr title="Eliminar usuario"><a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:usuarioEliminar' registro.usuario %}')" role="button"><i class="fas fa-trash-alt"></i></a></abbr>
+                <abbr title="Actualizar datos"><a class="btn btn-info" href="{% url 'carsapp:usuarioFormActualizar' registro.usuario %}" role="button"><i class="fas fa-edit"></i></a></abbr>
             </td>
         </tr>
         {% endfor %}

@@ -1,4 +1,5 @@
 {% extends 'carsapp/base.html' %}
+{% load humanize %}
 {% load static %}
 
 {% block titulo %} Facturas {% endblock %}
@@ -25,9 +26,6 @@
     {% endif %}
 </div>
     <br>
-    
-    
-    <br />
     <br />
     {% if object_list %}
     <table class="table  table-hover">
@@ -35,17 +33,19 @@
             <th>#</th>
             <th>Nombre del cliente</th>
             <th>Vehículo</th>
+            <th>Fecha de factura</th>
             <th>Total a pagar</th>
             <th>Acciones</th>
         </tr>
         {% for registro in object_list %}
         <tr>
             <td>{{ forloop.counter }}</td>
-            <td>{{ registro.id_Cliente.nombre_Cliente }}</td>
-            <td>{{ registro.id_Vehi.placa }}</td>
-            <td>$ {{ registro.totalAPagar }}</td>
+            <td>{{ registro.id_Cliente.nombre_Cliente }} {{ registro.id_Cliente.apellido_Cliente }}</td>
+            <td>{% if registro.id_Vehi.placa %} {{ registro.id_Vehi.placa }} {% else %} No aplica {% endif %}</td>
+            <td>{{ registro.fecha }}</td>
+            <td>$ {{ registro.totalAPagar|intcomma }}</td>
             <td>
-                <a class="btn btn-info" href="{% url 'carsapp:facturasDetalles' registro.id %}" role="button"><i class="fas fa-info-circle"></i></a>
+                <abbr title="Detalles de factura"><a class="btn btn-info" href="{% url 'carsapp:facturasDetalles' registro.id %}" role="button"><i class="fas fa-info-circle"></i></a></abbr>
             </td>
         </tr>
         {% endfor %}

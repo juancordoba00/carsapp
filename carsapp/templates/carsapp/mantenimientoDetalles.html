@@ -35,14 +35,14 @@
         <tr>
             <th>#</th>
             <th>Servicio</th>
-            <th>Acciones</th>
+            <!--<th>Acciones</th>-->
         </tr>
         {% for i in datos %}
         <tr>
             <td>{{ forloop.counter }}</td>
             <td>{{ i.id_Servicio.nombre_Servicio }}</td>
             <td>
-                <a class="btn btn-danger" href="javascript:eliminarServicio('{% url 'carsapp:mantenimientoServicioEliminar' i.id %}')" role="button"><i class="fas fa-trash-alt"></i></a>
+                <!--<a class="btn btn-danger" href="javascript:eliminarServicio('{% url 'carsapp:mantenimientoServicioEliminar' i.id %}')" role="button"><i class="fas fa-trash-alt"></i></a>-->
             </td>
         </tr>
         {% endfor %}

@@ -41,6 +41,7 @@ class Lista_Cliente(models.Model):
     email_Cliente = models.EmailField(blank=False, null=False)
     telefono_Cliente = models.CharField(max_length=15, blank=False, null=False)
 
+
 class EmpleadoXCliente(models.Model):
     id = models.AutoField(primary_key=True)
     id_Empleado_FK = models.ForeignKey(Empleados, on_delete=models.DO_NOTHING)
@@ -103,12 +104,15 @@ class VehiXServicio(models.Model):
 
 class Facturas(models.Model):
     id = models.AutoField(primary_key=True)
-    totalAPagar = models.IntegerField(blank=False, null=False)
+    totalAPagar = models.IntegerField(blank=False, null=True)
+    fecha = models.DateTimeField('Fecha y hora del pedido', null=True)
     id_Cliente = models.ForeignKey(Lista_Cliente, on_delete=CASCADE, null=False)
-    id_Vehi = models.ForeignKey(Vehiculo, on_delete=models.DO_NOTHING, null=False)
+    id_Vehi = models.ForeignKey(Vehiculo, on_delete=models.DO_NOTHING, null=True)
     
 class DetallesFacturas(models.Model):
     id = models.AutoField(primary_key=True)
     id_Servicio = models.ForeignKey(Servicios, on_delete=models.DO_NOTHING, null=True)
     id_Producto = models.ForeignKey(Inventario, on_delete=models.DO_NOTHING, null=True)
+    precio = models.IntegerField(null=True)
+    cantidad_Producto = models.IntegerField(null=True)
     id_Factura = models.ForeignKey(Facturas, on_delete=models.DO_NOTHING, null=True)

@@ -1,0 +1,46 @@
+{% extends 'carsapp/base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block titulo %} Ventas {% endblock %}
+
+{% block contenedor %}
+<div class="card text-white bg-secondary">
+    <div class="card-body">
+        <div>
+            Venta de productos
+        </div>
+        <div class="btn-cerrarSesion">
+            <form class="form-inline my-2 my-lg-0">
+                <a href="{% url 'carsapp:ver_carrito' %}" type="button" class="btn btn-primary ">
+                    <i class="fas fa-shopping-bag"></i> Canasta <span class="badge bg-secondary" id="carrito"> {{ request.session.bolsa }}</span>
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+
+{% if datos %}
+    <table class="table table-hover">
+        <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </tr>
+        {% for producto in datos %}
+        <tr>
+            <td><img src="{{ producto.imagen.url }}" alt="{{ producto.id_Producto }}" width="50" height="50"> {{ producto.producto }}</td>
+            <td>$ {{ producto.valor_Venta|intcomma }}</td>
+            <td>{% if producto.stock > 0 %}
+                    <input type="number" id="{{ producto.id_Producto }}" min="1" max="{{ producto.stock }}" value="1" size="2"/>
+                    <a href="javascript:agregarCarrito('{% url 'carsapp:agregar_carrito' producto.id_Producto %}', '{{ producto.id_Producto }}')" class="btn btn-primary">Agregar</a>
+                {% else %}
+                    <span class="badge rounded-pill bg-warning text-dark">Producto Agotado...</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+{% endblock %}

@@ -39,14 +39,21 @@
                         Administración
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        {% if request.session.login.2 == 'Administrador' or request.session.login.2 == '3' %}
-                        <a class="dropdown-item" href="{% url 'carsapp:clienteListar' %}">Clientes</a>
-                        <a class="dropdown-item" href="{% url 'carsapp:empleadoListar' %}">Empleados</a>
-                        <a class="dropdown-item" href="{% url 'carsapp:usuarioListar' %}">Usuarios</a>
-                        <a class="dropdown-item" href="{% url 'carsapp:servicioListar' %}">Servicios</a>
-                        <a class="dropdown-item" href="{% url 'carsapp:vehiculoListar' %}">Vehículos</a>
-                        
+                        {% if request.session.login.2 == 'Administrador'  or request.session.login.2 == 'Recepcionista' %}
+                            <a class="dropdown-item" href="{% url 'carsapp:clienteListar' %}">Clientes</a>
                         {% endif %}
+                        {% if request.session.login.2 == 'Administrador' %}
+                            <a class="dropdown-item" href="{% url 'carsapp:empleadoListar' %}">Empleados</a>
+                        {% endif %}
+                        {% if request.session.login.2 == 'Administrador' %}
+                            <a class="dropdown-item" href="{% url 'carsapp:usuarioListar' %}">Usuarios</a>
+                        {% endif %}
+                        {% if request.session.login.2 == 'Administrador' or request.session.login.2 == 'Empleado' %}
+                            <a class="dropdown-item" href="{% url 'carsapp:servicioListar' %}">Servicios</a>
+                        {% endif %}
+                        {% if request.session.login.2 == 'Administrador' or request.session.login.2 == 'Recepcionista' %}
+                            <a class="dropdown-item" href="{% url 'carsapp:vehiculoListar' %}">Vehículos</a>
+                        {% endif %}                        
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -56,40 +63,40 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% if request.session.login.2 == 'Administrador' or request.session.login.2 == 'Empleado' %}
-                        <a class="dropdown-item" href="{% url 'carsapp:inventarioListar' %}">Productos</a>
-                        <a class="dropdown-item" href="{% url 'carsapp:proveedorListar' %}">Proveedores</a>
-                        
+                            <a class="dropdown-item" href="{% url 'carsapp:inventarioListar' %}">Productos</a>
                         {% endif %}
+                        {% if request.session.login.2 == 'Administrador' or request.session.login.2 == 'Recepcionista' %}
+                            <a class="dropdown-item" href="{% url 'carsapp:proveedorListar' %}">Proveedores</a>
+                        {% endif %}         
                     </div>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Facturación
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        {% if request.session.login.2 == 'Administrador' or request.session.login.2 == '3' %}
-                        <a class="dropdown-item" href="{% url 'carsapp:FacturasLista' %}">Facturas</a>
-                        <a class="dropdown-item" href="{% url 'carsapp:shopping' %}">Shopping</a>
-                        
-                        {% endif %}
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Procesos
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        {% if request.session.login.2 == 'Administrador' or request.session.login.2 == '3' %}
-                        <a class="dropdown-item" href="{% url 'carsapp:RevisionVehiLista' %}">Revisión vehículo</a>
-                        <a class="dropdown-item" href="{% url 'carsapp:MantenimientoVehiLista' %}">Mantenimiento vehículo</a>
-                        <a class="dropdown-item" href="">Estado del vehículo</a>
-
-                        
-                        {% endif %}
-                    </div>
-                </li>
+                {% if request.session.login.2 == 'Administrador' or request.session.login.2 == 'Recepcionista' %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Facturación
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'carsapp:FacturasLista' %}">Facturas</a>
+                            <a class="dropdown-item" href="{% url 'carsapp:vender' %}">Ventas</a>
+                            <!--<a class="dropdown-item" href="{% url 'carsapp:shopping' %}">Shopping</a>-->
+                            
+                        </div>
+                    </li>
+                {% endif %}
+                {% if request.session.login.2 == 'Administrador' or request.session.login.2 == 'Empleado' %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Procesos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'carsapp:RevisionVehiLista' %}">Revisión vehículo</a>
+                            <a class="dropdown-item" href="{% url 'carsapp:MantenimientoVehiLista' %}">Mantenimiento vehículo</a>
+                            <!--<a class="dropdown-item" href="">Estado del vehículo</a>-->
+                        </div>
+                    </li>
+                {% endif %}
                
             </ul>
             <div>
@@ -97,7 +104,7 @@
                     <div class="bienvenida">
                         Bienvenido {{ request.session.login.0 }} {{ request.session.login.1 }} ({{ request.session.login.2 }})
                     </div>
-                    <a class="btn btn-outline-success my-2 my-sm-0" type="submit" id="btn-search" href="{% url 'carsapp:logout' %}"><i class="fas fa-sign-out-alt"></i></a>
+                    <abbr title="Cerrar sesion"><a class="btn btn-outline-success my-2 my-sm-0" type="submit" id="btn-search" href="{% url 'carsapp:logout' %}"><i class="fas fa-sign-out-alt"></i></a></abbr>
                 {% endif %}
             </div>
         </div>

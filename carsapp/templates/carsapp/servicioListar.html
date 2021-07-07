@@ -1,4 +1,5 @@
 {% extends 'carsapp/base.html' %}
+{% load humanize %}
 {% load static %}
 
 {% block titulo %} Configuración de Servicio {% endblock %}
@@ -28,9 +29,6 @@
     {% endif %}
 </div>
     <br>
-
-    
-    <br />
     <br />
     {% if object_list %}
     <table class="table  table-hover">
@@ -46,10 +44,10 @@
             <td>{{ registro.id_Servicio }}</td>
             <td>{{ registro.tipo_Servicio }}</td>
             <td>{{ registro.nombre_Servicio }}</td>
-            <td>{{ registro.valor_Servicio }}</td>
+            <td>$ {{ registro.valor_Servicio|intcomma }}</td>
             <td>
-                <a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:servicioEliminar' registro.id_Servicio %}')" role="button"><i class="fas fa-trash-alt"></i></a>
-                <a class="btn btn-info" href="{% url 'carsapp:servicioFormActualizar' registro.id_Servicio %}" role="button"><i class="fas fa-edit"></i></a>
+                <abbr title="Eliminar servicio"><a class="btn btn-danger" href="javascript:vehiculo_Eliminar('{% url 'carsapp:servicioEliminar' registro.id_Servicio %}')" role="button"><i class="fas fa-trash-alt"></i></a></abbr>
+                <abbr title="Actualizar datos"><a class="btn btn-info" href="{% url 'carsapp:servicioFormActualizar' registro.id_Servicio %}" role="button"><i class="fas fa-edit"></i></a></abbr>
             </td>
         </tr>
         {% endfor %}

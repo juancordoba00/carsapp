@@ -21,7 +21,7 @@
         <input type="hidden" name="id" value="{{ dato.id_Producto }}"><br>
         Referencia: <input name="Ref" value="{{ dato.Ref }}" class="form-control" required><br>
         Producto: <input name="producto" value="{{ dato.producto }}" class="form-control" required><br>
-        Imagen: <input type="file" name="imagen" required><br><br>
+        Imagen: <input type="file" name="imagen" value="{{ dato.imagen.url }}" required><br><br>
         Proveedor: <select name="proveedor" class="form-control">
             <option value="{{ dato.provedor.id_proveedor }}">{{ dato.provedor.nombre }}</option>
             {% for i in proveedor %}

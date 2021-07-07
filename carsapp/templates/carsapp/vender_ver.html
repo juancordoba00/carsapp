@@ -1,0 +1,85 @@
+{% extends 'carsapp/base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block titulo %} Ventas {% endblock %}
+
+{% block contenedor %}
+<div class="card text-white bg-secondary">
+    <div class="card-body">
+        <div>
+            Ver compra
+        </div>
+        <div class="btn-cerrarSesion">
+            <a class="btn btn-primary" href="{% url 'carsapp:vender' %}" id="ID_BTNListar4">Volver</a>
+        </div>
+    </div>
+</div>
+<div>
+    {% if messages %}
+        {% for m in messages %}
+        <div class="alert alert-{% if m.level == 25 %}success{% elif m.level == 40 %}danger{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+            {{ m }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    
+    {% endif %}
+</div>
+<br>
+
+{% if datos or request.session.carrito %}
+    <h1>Cantidad de Productos: {{ request.session.bolsa }}</h1>
+    <h1>Detalle:</h1>
+    <table class="table  table-hover">
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Subtotal</th>
+            <th>Acciones</th>
+        </tr>
+        {% for producto in datos %}
+        <tr>
+            <td><img src="{{ producto.foto.url }}" alt="{{ producto.producto }}" width="50"><br>{{ producto.nombre }}</td>
+            <td><input type="number" value="{{ producto.cantidad }}" name="cantidad" size="3" oninput="editarCantidadCarrito(this.value, '{{ producto.producto }}', {{ producto.precio }}, '{{ forloop.counter }}', '{% url 'carsapp:editar_carrito' '0' 0 %}');" min="1"/></td>
+            <td>$ {{ producto.precio|intcomma }}</td>
+            <td id="cambio_subtotal_{{ producto.producto }}">
+                $ {{ producto.subtotal|intcomma }}
+            </td>
+            <td>
+                <input type="button" id="s_{{ forloop.counter }}" value="{{ producto.subtotal }}" style="display:none;"/>
+                <abbr title="Eliminar"><a class="btn btn-danger" href="javascript:eliminarProductoCarrito('{% url 'carsapp:quitar_producto' producto.producto %}')" role="button"><i class="fas fa-trash-alt"></i></a></abbr>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <h1 class="display-4">Total: <span id="total_carrito">$ {{ total|intcomma }}</span></h1>
+    <br><br>
+    <form action="{% url 'carsapp:guardar_pedido' %}" method="POST" onsubmit="return guardarPedido()">
+        {% csrf_token %}
+        <div>
+            <label style="color: blue; font-size: large; font-weight: 600;">Cliente:</label>
+            <select name="cliente" class="form-control" required>
+                <option value="0">Seleccione cliente</option>
+                {% for i in clientes %}
+                    <option value="{{ i.id_Cliente }}">{{ i.nombre_Cliente }} {{ i.apellido_Cliente }} ({{ i.id_Cliente }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary btn-lg">Facturar</button>
+        <a href="{% url 'carsapp:limpiar_carrito' %}" type="button" class="btn btn-danger btn-lg">Limpiar Carrito</a>
+    </form>
+    <br/>
+    
+
+    {% else %}
+    No hay datos aún.
+    {% endif %}
+
+{% endblock %}
+    

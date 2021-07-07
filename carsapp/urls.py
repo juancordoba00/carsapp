@@ -80,4 +80,14 @@ urlpatterns = [
 
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
+
+    #rutas carrito
+    path('vender/', views.vender, name='vender'),
+    path('agregar_carrito/<str:id>/', views.agregarCarrito, name='agregar_carrito'),
+    path('ver_carrito/', views.verCarrito, name='ver_carrito'),
+    path('quitar_producto/<str:id>/', views.quitarProducto, name='quitar_producto'),
+    path('limpiar_carrito/', views.limpiarCarrito, name='limpiar_carrito'),
+    path('editar_carrito/<str:id>/<int:cantidad>/', views.editarCarrito, name='editar_carrito'),
+
+    path('guardar_pedido/', views.guardarPedido, name='guardar_pedido'),
 ]

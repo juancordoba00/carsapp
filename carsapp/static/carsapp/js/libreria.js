@@ -102,3 +102,76 @@ function eliminarServicio(ruta){
         location.href = ruta
     }
 }
+
+// Carrito
+
+function agregarCarrito(ruta, producto){
+    console.log("agregar producto: " + producto + ", al carrito de compras")
+    cantidad = $('#'+producto).val()
+    console.log(cantidad)
+    $.ajax({
+        method: "GET",
+        url: ruta,
+        data: { "cantidad": cantidad },
+        cache: false
+    })
+    .done(function( respuesta ) {
+        $( "#carrito" ).html( respuesta );
+    });
+}
+
+function eliminarProductoCarrito(ruta){
+    if(confirm('Está seguro?')){
+        location.href = ruta;
+    }
+}
+
+function guardarPedido(){
+    if(confirm('Está seguro?')){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+const formatter = new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0
+});
+
+function editarCantidadCarrito(cantidad, producto, precio, campo_subtotal, ruta){
+
+    console.log(cantidad+ " " + producto+ " " + precio+ " " + campo_subtotal+ " " + ruta)
+    var subtotal = (cantidad * precio);
+
+    $('#s_'+campo_subtotal).val(subtotal);
+    
+    subtotal = formatter.format(subtotal);
+
+    $('#cambio_subtotal_'+producto).html(subtotal);
+    
+    // use type="text" with input to select the element
+    subtotalesBotones = $("input:button");
+    total = 0;
+    for (var i=0; i< subtotalesBotones.length; i++){
+        total = total + parseInt(subtotalesBotones[i].value);
+    }
+    total = formatter.format(total);
+    $('#total_carrito').html(total);
+
+    //llamado AJAX para actualizar variables de sesion, cantidad y producto
+    rutaOriginal = ruta.split("/")
+    ruta = "/"+rutaOriginal[1]+"/"+producto+"/"+cantidad+"/"
+    console.log(ruta)
+    $.ajax({
+        method: "GET",
+        url: ruta,
+        cache: false
+    })
+    .done(function( respuesta ) {
+        console.log( respuesta );
+    });
+}
+
